@@ -67,3 +67,37 @@ document.getElementById("ranking").innerHTML=html;
 }
 
 displayRanking();
+function exportCSV() {
+
+    if (teams.length === 0) {
+        alert("出力するデータがありません。");
+        return;
+    }
+
+    let csv = "順位,チーム名,ポイント\n";
+
+    teams.forEach((team, index) => {
+        csv += `${index + 1},${team.name},${team.point}\n`;
+    });
+
+    const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+
+    const today = new Date();
+    const fileName =
+        `result-esports-ranking-${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}.csv`;
+
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}

@@ -93,3 +93,29 @@ font-size:16px;
 }
 
 }
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-bottom:20px;
+
+}
+
+th{
+
+background:#0066ff;
+padding:12px;
+
+}
+
+td{
+
+padding:8px;
+
+}
+
+td input{
+
+margin:0;
+
+}

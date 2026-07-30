@@ -19,18 +19,21 @@ else if(rank<=15)placement=1;
 
 const total=placement+kills;
 
-const index=teams.findIndex(t=>t.name===name);
+const index = teams.findIndex(t => t.name === name);
 
-if(index>=0){
-teams[index].point+=total;
-}else{
-teams.push({
-    name:name,
-    rank:rank,
-    kills:kills,
-    placement:placement,
-    point:total
-});
+if (index >= 0) {
+    teams[index].rank = rank;
+    teams[index].kills += kills;
+    teams[index].placement += placement;
+    teams[index].point += total;
+} else {
+    teams.push({
+        name: name,
+        rank: rank,
+        kills: kills,
+        placement: placement,
+        point: total
+    });
 }
 
 teams.sort((a,b)=>b.point-a.point);

@@ -25,8 +25,11 @@ if(index>=0){
 teams[index].point+=total;
 }else{
 teams.push({
-name:name,
-point:total
+    name:name,
+    rank:rank,
+    kills:kills,
+    placement:placement,
+    point:total
 });
 }
 

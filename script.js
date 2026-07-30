@@ -223,3 +223,20 @@ localStorage.setItem("teams",JSON.stringify(teams));
 displayRanking();
 
 }
+function createImage(){
+
+    const target = document.getElementById("resultImage");
+
+    html2canvas(target).then(canvas => {
+
+        const link = document.createElement("a");
+
+        link.download = "result-esports-result.png";
+
+        link.href = canvas.toDataURL();
+
+        link.click();
+
+    });
+
+}

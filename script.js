@@ -1,9 +1,15 @@
+let teams = JSON.parse(localStorage.getItem("teams")) || [];
+
+
 function calculatePoint() {
 
+    const name = document.querySelector("#team").value;
     const rank = Number(document.querySelector("#rank").value);
     const kills = Number(document.querySelector("#kills").value);
 
+
     let placement = 0;
+
 
     if(rank === 1) placement = 12;
     else if(rank === 2) placement = 9;
@@ -18,7 +24,48 @@ function calculatePoint() {
     const total = placement + kills;
 
 
-    document.querySelector("#result").innerHTML =
-    "獲得ポイント：" + total + "pt";
+    teams.push({
+        name:name,
+        point:total
+    });
+
+
+    localStorage.setItem(
+        "teams",
+        JSON.stringify(teams)
+    );
+
+
+    displayRanking();
+
+}
+
+
+
+function displayRanking(){
+
+    teams.sort(
+        (a,b)=>b.point-a.point
+    );
+
+
+    let html="";
+
+
+    teams.forEach((team,index)=>{
+
+        html +=
+        (index+1)
+        +"位 "
+        +team.name
+        +" "
+        +team.point
+        +"pt<br>";
+
+    });
+
+
+    document.querySelector("#ranking")
+    .innerHTML = html;
 
 }

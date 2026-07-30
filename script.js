@@ -77,11 +77,31 @@ function exportCSV() {
         return;
     }
 
-    let csv = "順位,チーム名,ポイント\n";
+    function exportCSV(){
 
-    teams.forEach((team, index) => {
-        csv += `${index + 1},${team.name},${team.point}\n`;
-    });
+let csv="順位,チーム名,順位ポイント,キル数,合計ポイント\n";
+
+teams.forEach((team,index)=>{
+
+csv+=`${index+1},${team.name},${team.placement},${team.kills},${team.point}\n`;
+
+});
+
+const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+
+const url=URL.createObjectURL(blob);
+
+const link=document.createElement("a");
+
+link.href=url;
+
+link.download="result-esports-ranking.csv";
+
+link.click();
+
+URL.revokeObjectURL(url);
+
+}
 
     const blob = new Blob([csv], {
         type: "text/csv;charset=utf-8;"

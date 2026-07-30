@@ -179,3 +179,47 @@ function createTable(){
 }
 
 createTable();
+function calculateAll(){
+
+teams=[];
+
+for(let i=1;i<=20;i++){
+
+const name=document.getElementById(`team${i}`).value;
+
+if(name=="") continue;
+
+const rank=Number(document.getElementById(`rank${i}`).value);
+
+const kills=Number(document.getElementById(`kill${i}`).value);
+
+let placement=0;
+
+if(rank==1)placement=12;
+else if(rank==2)placement=9;
+else if(rank==3)placement=7;
+else if(rank==4)placement=5;
+else if(rank==5)placement=4;
+else if(rank<=7)placement=3;
+else if(rank<=10)placement=2;
+else if(rank<=15)placement=1;
+
+teams.push({
+
+name,
+rank,
+kills,
+placement,
+point:placement+kills
+
+});
+
+}
+
+teams.sort((a,b)=>b.point-a.point);
+
+localStorage.setItem("teams",JSON.stringify(teams));
+
+displayRanking();
+
+}

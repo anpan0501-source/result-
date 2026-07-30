@@ -1,91 +1,95 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: #05070d;
-    color: white;
-    font-family: Arial, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
-
-header {
-    background: linear-gradient(135deg, #001f3f, #0066ff);
-    padding: 30px 10px;
-    text-align: center;
-    box-shadow: 0 0 20px #0066ff;
+body{
+    background:#05070d;
+    color:white;
 }
 
-
-header h1 {
-    margin: 0;
-    font-size: 36px;
-    letter-spacing: 2px;
+header{
+    background:linear-gradient(135deg,#001f3f,#0066ff);
+    text-align:center;
+    padding:20px;
+    box-shadow:0 0 20px #0066ff;
 }
 
-
-header p {
-    margin-top: 10px;
-    color: #d9ecff;
+header h1{
+    font-size:32px;
 }
 
-
-main {
-    padding: 20px;
+main{
+    width:95%;
+    max-width:600px;
+    margin:20px auto;
 }
 
-
-h2 {
-    border-left: 5px solid #0066ff;
-    padding-left: 10px;
+.box,.ranking{
+    background:#101722;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 0 15px rgba(0,102,255,.4);
 }
 
-
-.box {
-    background: #101722;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0,102,255,0.5);
+input{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    background:#1b2636;
+    color:white;
+    font-size:16px;
 }
 
-
-label {
-    display: block;
-    margin-top: 15px;
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#0066ff;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
 }
 
-
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    background: #05070d;
-    border: 1px solid #0066ff;
-    color: white;
-    border-radius: 8px;
+button:active{
+    transform:scale(.98);
 }
 
-
-button {
-    width: 100%;
-    margin-top: 20px;
-    padding: 15px;
-    background: #0066ff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+.team{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px;
+    border-bottom:1px solid #2a3d55;
 }
 
-
-button:hover {
-    background: #008cff;
+.team:last-child{
+    border-bottom:none;
 }
 
+.rank{
+    color:#00bfff;
+    font-weight:bold;
+}
 
-.ranking {
-    background: #101722;
-    padding: 20px;
-    border-radius: 15px;
-    line-height: 2;
-    box-shadow: 0 0 15px rgba(0,102,255,0.5);
+.point{
+    color:#4cff7d;
+}
+
+@media(max-width:600px){
+
+header h1{
+font-size:26px;
+}
+
+button{
+font-size:16px;
+}
+
 }

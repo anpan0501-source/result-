@@ -148,3 +148,34 @@ async function exportPDF() {
 }
 
 displayRanking();
+function createTable(){
+
+    const body=document.getElementById("tableBody");
+
+    body.innerHTML="";
+
+    for(let i=1;i<=20;i++){
+
+        body.innerHTML+=`
+        <tr>
+
+        <td>
+        <input id="rank${i}" type="number" min="1" max="20">
+        </td>
+
+        <td>
+        <input id="team${i}" type="text">
+        </td>
+
+        <td>
+        <input id="kill${i}" type="number" value="0">
+        </td>
+
+        </tr>
+        `;
+
+    }
+
+}
+
+createTable();

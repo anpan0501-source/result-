@@ -37,12 +37,18 @@
                 <h2>大会結果入力</h2>
 
                 <p>
-                    順位・チーム名・キル数を入力して、
+                    順位・チーム名・キル数を入力して
                     「一括集計」を押してください。
                     同じチーム名は累計へ加算されます。
                 </p>
 
+                <p class="match-point-description">
+                    ポーランドルール：50ポイント以上で点灯。
+                    点灯状態で次の試合に1位を取ると優勝です。
+                </p>
+
             </div>
+
 
             <div class="round-badge">
 
@@ -56,6 +62,14 @@
 
             </div>
 
+        </div>
+
+
+        <div
+            id="winnerNotice"
+            class="winner-notice"
+            hidden
+        >
         </div>
 
 
@@ -126,7 +140,7 @@
     </section>
 
 
-    <!-- 出力ボタン -->
+    <!-- 出力 -->
     <section class="panel">
 
         <h2>大会結果出力</h2>
@@ -160,7 +174,7 @@
     </section>
 
 
-    <!-- 結果画像プレビュー -->
+    <!-- 結果プレビュー -->
     <section class="preview-panel">
 
         <h2>大会結果プレビュー</h2>
@@ -175,7 +189,7 @@
 
                 <div class="result-overlay">
 
-                    <!-- 上部タイトル -->
+                    <!-- 上部 -->
                     <div class="result-top">
 
                         <div class="result-brand">
@@ -204,6 +218,13 @@
                             <small id="resultRoundText">
                                 0 MATCHES
                             </small>
+
+                            <div
+                                id="resultWinnerText"
+                                class="result-winner-text"
+                                hidden
+                            >
+                            </div>
 
                         </div>
 
@@ -276,6 +297,10 @@
                         </span>
 
                         <span>
+                            MATCH POINT：50
+                        </span>
+
+                        <span>
                             APEX TOURNAMENT SYSTEM
                         </span>
 
@@ -298,7 +323,7 @@
 <!-- PDF生成 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- 自分のJavaScript -->
+<!-- メイン処理 -->
 <script src="script.js"></script>
 
 </body>

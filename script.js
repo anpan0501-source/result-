@@ -1,16 +1,16 @@
 "use strict";
 
 
-// ================================
+// ==============================
 // ポーランドルール設定
-// ================================
+// ==============================
 
 const MATCH_POINT_THRESHOLD = 50;
 
 
-// ================================
+// ==============================
 // 初期データ
-// ================================
+// ==============================
 
 let teams = loadTeams();
 
@@ -23,9 +23,9 @@ let tournamentWinner =
     localStorage.getItem("tournamentWinner") || "";
 
 
-// ================================
-// 保存済みデータ読み込み
-// ================================
+// ==============================
+// 保存データ読み込み
+// ==============================
 
 function loadTeams() {
 
@@ -52,9 +52,9 @@ function loadTeams() {
 }
 
 
-// ================================
-// チーム名の比較用
-// ================================
+// ==============================
+// チーム名比較用
+// ==============================
 
 function normalizeTeamName(name) {
 
@@ -64,9 +64,9 @@ function normalizeTeamName(name) {
 }
 
 
-// ================================
+// ==============================
 // 順位ポイント
-// ================================
+// ==============================
 
 function getPlacementPoint(rank) {
 
@@ -92,9 +92,9 @@ function getPlacementPoint(rank) {
 }
 
 
-// ================================
-// 20チーム入力欄作成
-// ================================
+// ==============================
+// 入力表作成
+// ==============================
 
 function createTable() {
 
@@ -157,49 +157,40 @@ function createTable() {
 }
 
 
-// ================================
-// チーム名を入力欄へ復元
-// ================================
+// ==============================
+// 保存済みチーム名復元
+// ==============================
 
 function restoreTeamNames() {
 
-    teams
-        .slice()
-        .sort((a, b) => {
+    teams.forEach((team, index) => {
 
-            return String(a.name).localeCompare(
-                String(b.name),
-                "ja"
+        if (index >= 20) {
+            return;
+        }
+
+        const input =
+            document.getElementById(
+                `team${index + 1}`
             );
-        })
-        .forEach((team, index) => {
 
-            if (index >= 20) {
-                return;
-            }
-
-            const input =
-                document.getElementById(
-                    `team${index + 1}`
-                );
-
-            if (input) {
-                input.value = team.name;
-            }
-        });
+        if (input) {
+            input.value = team.name;
+        }
+    });
 }
 
 
-// ================================
+// ==============================
 // 一括集計
-// ================================
+// ==============================
 
 function calculateAll() {
 
     if (tournamentWinner !== "") {
 
         alert(
-            `すでに「${tournamentWinner}」が優勝しています。\n全データリセット後に新しい大会を開始してください。`
+            `すでに「${tournamentWinner}」が優勝しています。\n新しい大会を始める場合は全データリセットを押してください。`
         );
 
         return;
@@ -212,9 +203,9 @@ function calculateAll() {
 
 
     /*
-     * 試合開始前のポイントを保存
-     * この時点で50ポイント以上のチームだけが
-     * 今回1位を取ると優勝
+     * 試合開始前のポイントを記録します。
+     * 試合前に50pt以上だったチームが、
+     * 今回1位を取った場合のみ優勝です。
      */
 
     const pointsBeforeRound =
@@ -276,7 +267,6 @@ function calculateAll() {
             normalizeTeamName(name);
 
 
-        // 同一試合内の重複
         if (
             enteredNames.has(normalizedName)
         ) {
@@ -291,7 +281,6 @@ function calculateAll() {
         enteredNames.add(normalizedName);
 
 
-        // 順位確認
         if (
             !Number.isInteger(rank) ||
             rank < 1 ||
@@ -299,14 +288,13 @@ function calculateAll() {
         ) {
 
             alert(
-                `${name}の順位を1～20で入力してください。`
+                `${name}の順位を1〜20で入力してください。`
             );
 
             return;
         }
 
 
-        // キル数確認
         if (
             !Number.isFinite(kills) ||
             kills < 0
@@ -320,17 +308,18 @@ function calculateAll() {
         }
 
 
-        /*
-         * 試合前に50ポイント以上で、
-         * 今回1位なら優勝
-         */
-
         const previousPoint =
             Number(
                 pointsBeforeRound.get(
                     normalizedName
                 ) || 0
             );
+
+
+        /*
+         * 試合開始前に50pt以上で、
+         * 今回の順位が1位なら優勝
+         */
 
         if (
             previousPoint >=
@@ -419,17 +408,10 @@ function calculateAll() {
     roundCount++;
 
 
-    // 優勝チーム保存
-
     if (winningTeamName !== "") {
 
         tournamentWinner =
             winningTeamName;
-
-        localStorage.setItem(
-            "tournamentWinner",
-            tournamentWinner
-        );
     }
 
 
@@ -457,9 +439,9 @@ function calculateAll() {
 }
 
 
-// ================================
+// ==============================
 // ランキング並び替え
-// ================================
+// ==============================
 
 function sortTeams() {
 
@@ -490,7 +472,7 @@ function sortTeams() {
         }
 
 
-        // 2位以下は合計ポイント順
+        // それ以外は合計ポイント順
         const pointA =
             Number(a.point || 0);
 
@@ -514,7 +496,6 @@ function sortTeams() {
         }
 
 
-        // さらに同点ならチーム名
         return String(a.name).localeCompare(
             String(b.name),
             "ja"
@@ -523,9 +504,9 @@ function sortTeams() {
 }
 
 
-// ================================
+// ==============================
 // ランキング表示
-// ================================
+// ==============================
 
 function displayRanking() {
 
@@ -581,8 +562,6 @@ function displayRanking() {
     }
 
 
-    // 優勝表示
-
     if (tournamentWinner !== "") {
 
         if (winnerNotice) {
@@ -613,8 +592,6 @@ function displayRanking() {
     }
 
 
-    // 通常ランキング
-
     if (teams.length === 0) {
 
         if (ranking) {
@@ -626,6 +603,7 @@ function displayRanking() {
     } else {
 
         let rankingHtml = "";
+
 
         teams.forEach((team, index) => {
 
@@ -731,8 +709,6 @@ function displayRanking() {
     }
 
 
-    // 画像用ランキング
-
     let leftHtml = "";
 
     let rightHtml = "";
@@ -822,8 +798,6 @@ function displayRanking() {
         });
 
 
-    // 1〜10位の空行
-
     for (
         let i =
             Math.min(teams.length, 10);
@@ -837,8 +811,6 @@ function displayRanking() {
             createEmptyRow(i + 1);
     }
 
-
-    // 11〜20位の空行
 
     const rightTeamCount =
         Math.max(
@@ -874,43 +846,33 @@ function displayRanking() {
 }
 
 
-// ================================
+// ==============================
 // 空行
-// ================================
+// ==============================
 
 function createEmptyRow(position) {
 
     return `
         <tr>
 
-            <td>
-                ${position}
-            </td>
+            <td>${position}</td>
 
-            <td>
-                -
-            </td>
+            <td>-</td>
 
-            <td>
-                0
-            </td>
+            <td>0</td>
 
-            <td>
-                0
-            </td>
+            <td>0</td>
 
-            <td>
-                0
-            </td>
+            <td>0</td>
 
         </tr>
     `;
 }
 
 
-// ================================
-// HTML特殊文字対策
-// ================================
+// ==============================
+// HTML安全化
+// ==============================
 
 function escapeHtml(value) {
 
@@ -923,9 +885,9 @@ function escapeHtml(value) {
 }
 
 
-// ================================
-// 保存
-// ================================
+// ==============================
+// データ保存
+// ==============================
 
 function saveData() {
 
@@ -955,9 +917,9 @@ function saveData() {
 }
 
 
-// ================================
-// 次の試合用クリア
-// ================================
+// ==============================
+// 順位・キルだけクリア
+// ==============================
 
 function clearRoundScores() {
 
@@ -984,9 +946,9 @@ function clearRoundScores() {
 }
 
 
-// ================================
+// ==============================
 // 入力欄すべてクリア
-// ================================
+// ==============================
 
 function clearRoundInputs() {
 
@@ -1037,9 +999,9 @@ function clearInputsWithoutConfirm() {
 }
 
 
-// ================================
-// 大会データ全リセット
-// ================================
+// ==============================
+// 全データリセット
+// ==============================
 
 function resetTournament() {
 
@@ -1080,18 +1042,13 @@ function resetTournament() {
 }
 
 
-// ================================
+// ==============================
 // CSV出力
-// ================================
+// ==============================
 
 function exportCSV() {
 
-    teams = loadTeams();
-
-    tournamentWinner =
-        localStorage.getItem(
-            "tournamentWinner"
-        ) || "";
+    reloadSavedData();
 
     if (teams.length === 0) {
 
@@ -1179,8 +1136,6 @@ function exportCSV() {
 }
 
 
-// CSV特殊文字対策
-
 function csvEscape(value) {
 
     const text =
@@ -1202,9 +1157,9 @@ function csvEscape(value) {
 }
 
 
-// ================================
-// PNG画像生成
-// ================================
+// ==============================
+// PNG画像
+// ==============================
 
 async function createImage() {
 
@@ -1213,7 +1168,7 @@ async function createImage() {
     if (teams.length === 0) {
 
         alert(
-            "集計結果がありません。\n先に「一括集計」を押してください。"
+            "集計結果がありません。\n先に一括集計を押してください。"
         );
 
         return;
@@ -1276,9 +1231,9 @@ async function createImage() {
 }
 
 
-// ================================
-// PDF出力
-// ================================
+// ==============================
+// PDF
+// ==============================
 
 async function exportPDF() {
 
@@ -1287,7 +1242,7 @@ async function exportPDF() {
     if (teams.length === 0) {
 
         alert(
-            "集計結果がありません。\n先に「一括集計」を押してください。"
+            "集計結果がありません。\n先に一括集計を押してください。"
         );
 
         return;
@@ -1389,9 +1344,9 @@ async function exportPDF() {
 }
 
 
-// ================================
-// 保存データ再読み込み
-// ================================
+// ==============================
+// データ再読み込み
+// ==============================
 
 function reloadSavedData() {
 
@@ -1411,13 +1366,11 @@ function reloadSavedData() {
 }
 
 
-// ================================
+// ==============================
 // Canvas生成
-// ================================
+// ==============================
 
-async function createResultCanvas(
-    target
-) {
+async function createResultCanvas(target) {
 
     if (
         typeof html2canvas !==
@@ -1473,9 +1426,9 @@ async function createResultCanvas(
 }
 
 
-// ================================
-// 背景画像読み込み待機
-// ================================
+// ==============================
+// 背景読み込み待ち
+// ==============================
 
 function waitForBackgroundImage() {
 
@@ -1484,9 +1437,7 @@ function waitForBackgroundImage() {
         const image =
             new Image();
 
-        image.onload = () => {
-            resolve();
-        };
+        image.onload = resolve;
 
         image.onerror = () => {
 
@@ -1498,15 +1449,15 @@ function waitForBackgroundImage() {
         };
 
         image.src =
-            `IMG_2769.png?v=${Date.now()}`;
+            `IMG_2769.png?v=20`;
 
     });
 }
 
 
-// ================================
-// ページ読み込み時
-// ================================
+// ==============================
+// 起動時
+// ==============================
 
 document.addEventListener(
     "DOMContentLoaded",

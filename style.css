@@ -100,8 +100,15 @@ h2 {
     line-height: 1.7;
 }
 
+.match-point-description {
+    color: #ffb2c2 !important;
+    font-weight: 700;
+}
 
-/* 試合数表示 */
+
+/* =========================
+   試合数
+========================= */
 
 .round-badge {
     min-width: 115px;
@@ -122,6 +129,33 @@ h2 {
 
     color: #62b4ff;
     font-size: 30px;
+}
+
+
+/* =========================
+   優勝表示
+========================= */
+
+.winner-notice {
+    margin-top: 20px;
+    padding: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b47600,
+            #ffcf3f
+        );
+
+    color: #171000;
+
+    border: 2px solid #fff1a2;
+    border-radius: 10px;
+
+    font-size: 20px;
+    font-weight: 900;
+
+    text-align: center;
 }
 
 
@@ -265,6 +299,28 @@ button:active {
     border-radius: 8px;
 }
 
+.ranking-team.match-point-team {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(120, 5, 34, 0.95),
+            rgba(50, 14, 34, 0.95)
+        );
+
+    border-left-color: #ff315f;
+}
+
+.ranking-team.winner-team {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(181, 120, 0, 0.96),
+            rgba(71, 49, 7, 0.96)
+        );
+
+    border-left-color: #ffdd62;
+}
+
 .ranking-position {
     font-size: 18px;
     font-weight: 800;
@@ -278,6 +334,29 @@ button:active {
 .ranking-points {
     color: #dce9ff;
     text-align: right;
+}
+
+.match-point-label,
+.winner-label {
+    display: inline-block;
+
+    margin-left: 8px;
+    padding: 3px 8px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.match-point-label {
+    background: #e01949;
+    color: #ffffff;
+}
+
+.winner-label {
+    background: #ffca37;
+    color: #241700;
 }
 
 
@@ -323,8 +402,8 @@ button:active {
     background:
         linear-gradient(
             180deg,
-            rgba(3, 9, 22, 0.32),
-            rgba(3, 8, 20, 0.62)
+            rgba(3, 9, 22, 0.34),
+            rgba(3, 8, 20, 0.65)
         );
 }
 
@@ -407,6 +486,29 @@ button:active {
 
     font-size: 21px;
     letter-spacing: 2px;
+}
+
+.result-winner-text {
+    display: inline-block;
+
+    margin-top: 10px;
+    padding: 6px 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d28c00,
+            #ffdb57
+        );
+
+    color: #171000;
+
+    border-radius: 999px;
+
+    font-size: 22px;
+    font-weight: 900;
+
+    text-shadow: none;
 }
 
 .result-corner-title {
@@ -501,7 +603,45 @@ button:active {
 }
 
 
-/* 1位 */
+/* 50ポイント以上・点灯 */
+
+.result-table tbody tr.match-point-active td {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(211, 17, 63, 0.96),
+            rgba(93, 5, 31, 0.94)
+        );
+
+    border-color: #ff7898;
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(255, 44, 91, 0.35);
+}
+
+
+/* 優勝チーム */
+
+.result-table tbody tr.tournament-winner td {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 192, 31, 0.98),
+            rgba(145, 87, 3, 0.96)
+        );
+
+    color: #ffffff;
+
+    border-color: #fff3a5;
+
+    box-shadow:
+        inset 0 0 25px
+        rgba(255, 235, 133, 0.58);
+}
+
+
+/* 上位3チーム */
 
 .result-table tbody tr.top-one td {
     background:
@@ -512,9 +652,6 @@ button:active {
         );
 }
 
-
-/* 2位 */
-
 .result-table tbody tr.top-two td {
     background:
         linear-gradient(
@@ -523,9 +660,6 @@ button:active {
             rgba(54, 65, 80, 0.88)
         );
 }
-
-
-/* 3位 */
 
 .result-table tbody tr.top-three td {
     background:

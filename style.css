@@ -1,121 +1,312 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    background:#05070d;
-    color:white;
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #05070c;
+    color: #ffffff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
 }
 
-header{
-    background:linear-gradient(135deg,#001f3f,#0066ff);
-    text-align:center;
-    padding:20px;
-    box-shadow:0 0 20px #0066ff;
+header {
+    padding: 28px 15px;
+    background: linear-gradient(
+        135deg,
+        #00173b,
+        #0066ff
+    );
+    text-align: center;
+    border-bottom: 3px solid #1780ff;
 }
 
-header h1{
-    font-size:32px;
+header h1 {
+    margin: 0;
+    font-size: 32px;
 }
 
-main{
-    width:95%;
-    max-width:600px;
-    margin:20px auto;
+header p {
+    margin: 8px 0 0;
+    color: #dbeaff;
 }
 
-.box,.ranking{
-    background:#101722;
-    border-radius:15px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 0 15px rgba(0,102,255,.4);
+main {
+    width: min(1100px, 94%);
+    margin: 25px auto;
 }
 
-input{
-    width:100%;
-    padding:15px;
-    margin:10px 0;
-    border:none;
-    border-radius:10px;
-    background:#1b2636;
-    color:white;
-    font-size:16px;
+.box,
+.result-preview-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #0d1320;
+    border: 1px solid #233552;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    background:#0066ff;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
+h2 {
+    margin-top: 0;
 }
 
-button:active{
-    transform:scale(.98);
+.description {
+    color: #c5d0df;
+    line-height: 1.7;
 }
 
-.team{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px;
-    border-bottom:1px solid #2a3d55;
+.round-info {
+    display: inline-block;
+    margin: 10px 0 18px;
+    padding: 10px 16px;
+    background: #131f34;
+    border-left: 4px solid #0066ff;
+    border-radius: 5px;
 }
 
-.team:last-child{
-    border-bottom:none;
+.table-wrapper,
+.result-scroll {
+    width: 100%;
+    overflow-x: auto;
 }
 
-.rank{
-    color:#00bfff;
-    font-weight:bold;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.point{
-    color:#4cff7d;
+#scoreTable {
+    min-width: 580px;
 }
 
-@media(max-width:600px){
-
-header h1{
-font-size:26px;
+th {
+    padding: 12px 8px;
+    background: #0066ff;
+    color: #ffffff;
+    border: 1px solid #2580ff;
+    text-align: center;
 }
 
-button{
-font-size:16px;
+td {
+    padding: 9px;
+    background: #111a2a;
+    border: 1px solid #293750;
+    text-align: center;
 }
 
-}
-table{
-
-width:100%;
-border-collapse:collapse;
-margin-bottom:20px;
-
-}
-
-th{
-
-background:#0066ff;
-padding:12px;
-
+td input {
+    width: 100%;
+    min-width: 70px;
+    margin: 0;
+    padding: 10px;
+    background: #070b12;
+    color: #ffffff;
+    border: 1px solid #364762;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
-td{
-
-padding:8px;
-
+td input:focus {
+    outline: 2px solid #0066ff;
+    border-color: #0066ff;
 }
 
-td input{
+.button-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
 
-margin:0;
+button {
+    min-height: 46px;
+    padding: 11px 18px;
+    background: #1b2b43;
+    color: #ffffff;
+    border: 1px solid #38516f;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
+button:hover {
+    filter: brightness(1.15);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.main-button,
+.image-button {
+    background: #0066ff;
+    border-color: #2d82ff;
+}
+
+.danger-button {
+    background: #9d2435;
+    border-color: #d6455b;
+}
+
+
+/* 通常ランキング */
+
+.ranking {
+    display: grid;
+    gap: 10px;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px;
+    background: #111a2a;
+    border-left: 5px solid #0066ff;
+    border-radius: 7px;
+}
+
+.team-position {
+    min-width: 50px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.team-name {
+    flex: 1;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.team-points {
+    text-align: right;
+    color: #d9e7ff;
+}
+
+
+/* PNG・PDF用結果表 */
+
+#resultImage {
+    width: 760px;
+    min-height: 400px;
+    padding: 30px;
+    background: #05070c;
+    color: #ffffff;
+}
+
+.result-header {
+    margin-bottom: 22px;
+    padding: 20px;
+    background: linear-gradient(
+        135deg,
+        #001638,
+        #0066ff
+    );
+    border-radius: 10px;
+    text-align: center;
+}
+
+.result-header h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.result-header p {
+    margin: 7px 0 0;
+    color: #e5efff;
+}
+
+#rankingTable {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#rankingTable th {
+    padding: 14px 8px;
+    background: #0066ff;
+    color: #ffffff;
+    border: 1px solid #2b84ff;
+    font-size: 17px;
+    word-break: normal;
+}
+
+#rankingTable td {
+    padding: 12px 8px;
+    background: #101827;
+    color: #ffffff;
+    border: 1px solid #31415e;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+#rankingTable tbody tr:nth-child(even) td {
+    background: #162138;
+}
+
+#rankingTable th:nth-child(1),
+#rankingTable td:nth-child(1) {
+    width: 14%;
+}
+
+#rankingTable th:nth-child(2),
+#rankingTable td:nth-child(2) {
+    width: 48%;
+}
+
+#rankingTable th:nth-child(3),
+#rankingTable td:nth-child(3) {
+    width: 17%;
+}
+
+#rankingTable th:nth-child(4),
+#rankingTable td:nth-child(4) {
+    width: 21%;
+}
+
+.empty-row td {
+    padding: 35px 10px !important;
+    color: #b9c4d5 !important;
+}
+
+
+/* スマホ対応 */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    main {
+        width: 96%;
+        margin: 15px auto;
+    }
+
+    .box,
+    .result-preview-section {
+        padding: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .team {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .team-points {
+        width: 100%;
+        text-align: left;
+        padding-left: 50px;
+    }
 }

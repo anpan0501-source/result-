@@ -2,6 +2,13 @@
 
 
 // ================================
+// ポーランドルール設定
+// ================================
+
+const MATCH_POINT_THRESHOLD = 50;
+
+
+// ================================
 // 初期データ
 // ================================
 
@@ -12,9 +19,12 @@ let roundCount =
         localStorage.getItem("roundCount")
     ) || 0;
 
+let tournamentWinner =
+    localStorage.getItem("tournamentWinner") || "";
+
 
 // ================================
-// 保存済みチームデータを読み込む
+// 保存済みデータ読み込み
 // ================================
 
 function loadTeams() {
@@ -39,6 +49,18 @@ function loadTeams() {
 
         return [];
     }
+}
+
+
+// ================================
+// チーム名の比較用
+// ================================
+
+function normalizeTeamName(name) {
+
+    return String(name)
+        .trim()
+        .toLocaleLowerCase("ja");
 }
 
 
@@ -136,26 +158,35 @@ function createTable() {
 
 
 // ================================
-// 保存済みチーム名を入力欄へ戻す
+// チーム名を入力欄へ復元
 // ================================
 
 function restoreTeamNames() {
 
-    teams.forEach((team, index) => {
+    teams
+        .slice()
+        .sort((a, b) => {
 
-        if (index >= 20) {
-            return;
-        }
-
-        const input =
-            document.getElementById(
-                `team${index + 1}`
+            return String(a.name).localeCompare(
+                String(b.name),
+                "ja"
             );
+        })
+        .forEach((team, index) => {
 
-        if (input) {
-            input.value = team.name;
-        }
-    });
+            if (index >= 20) {
+                return;
+            }
+
+            const input =
+                document.getElementById(
+                    `team${index + 1}`
+                );
+
+            if (input) {
+                input.value = team.name;
+            }
+        });
 }
 
 
@@ -165,10 +196,41 @@ function restoreTeamNames() {
 
 function calculateAll() {
 
+    if (tournamentWinner !== "") {
+
+        alert(
+            `すでに「${tournamentWinner}」が優勝しています。\n全データリセット後に新しい大会を開始してください。`
+        );
+
+        return;
+    }
+
     let inputCount = 0;
 
     const enteredNames =
         new Set();
+
+
+    /*
+     * 試合開始前のポイントを保存
+     * この時点で50ポイント以上のチームだけが
+     * 今回1位を取ると優勝
+     */
+
+    const pointsBeforeRound =
+        new Map();
+
+    teams.forEach(team => {
+
+        pointsBeforeRound.set(
+            normalizeTeamName(team.name),
+            Number(team.point || 0)
+        );
+    });
+
+
+    let winningTeamName = "";
+
 
     for (let i = 1; i <= 20; i++) {
 
@@ -195,13 +257,14 @@ function calculateAll() {
             continue;
         }
 
+
         const name =
             teamInput.value.trim();
 
-        // チーム名が空なら無視
         if (name === "") {
             continue;
         }
+
 
         const rank =
             Number(rankInput.value);
@@ -210,9 +273,10 @@ function calculateAll() {
             Number(killInput.value);
 
         const normalizedName =
-            name.toLocaleLowerCase("ja");
+            normalizeTeamName(name);
 
-        // 同じ試合内で同名チームを防止
+
+        // 同一試合内の重複
         if (
             enteredNames.has(normalizedName)
         ) {
@@ -225,6 +289,7 @@ function calculateAll() {
         }
 
         enteredNames.add(normalizedName);
+
 
         // 順位確認
         if (
@@ -240,6 +305,7 @@ function calculateAll() {
             return;
         }
 
+
         // キル数確認
         if (
             !Number.isFinite(kills) ||
@@ -253,23 +319,47 @@ function calculateAll() {
             return;
         }
 
+
+        /*
+         * 試合前に50ポイント以上で、
+         * 今回1位なら優勝
+         */
+
+        const previousPoint =
+            Number(
+                pointsBeforeRound.get(
+                    normalizedName
+                ) || 0
+            );
+
+        if (
+            previousPoint >=
+                MATCH_POINT_THRESHOLD &&
+            rank === 1
+        ) {
+
+            winningTeamName = name;
+        }
+
+
         const placement =
             getPlacementPoint(rank);
 
         const total =
             placement + kills;
 
+
         const teamIndex =
             teams.findIndex(
                 team =>
-                    String(team.name)
-                        .toLocaleLowerCase("ja") ===
-                    normalizedName
+                    normalizeTeamName(
+                        team.name
+                    ) === normalizedName
             );
+
 
         if (teamIndex >= 0) {
 
-            // 既存チームへ加算
             teams[teamIndex].kills =
                 Number(
                     teams[teamIndex].kills || 0
@@ -295,7 +385,6 @@ function calculateAll() {
 
         } else {
 
-            // 新規チーム追加
             teams.push({
 
                 name: name,
@@ -316,6 +405,7 @@ function calculateAll() {
         inputCount++;
     }
 
+
     if (inputCount === 0) {
 
         alert(
@@ -325,7 +415,23 @@ function calculateAll() {
         return;
     }
 
+
     roundCount++;
+
+
+    // 優勝チーム保存
+
+    if (winningTeamName !== "") {
+
+        tournamentWinner =
+            winningTeamName;
+
+        localStorage.setItem(
+            "tournamentWinner",
+            tournamentWinner
+        );
+    }
+
 
     sortTeams();
 
@@ -335,9 +441,19 @@ function calculateAll() {
 
     clearRoundScores();
 
-    alert(
-        `第${roundCount}試合の結果を追加しました。`
-    );
+
+    if (tournamentWinner !== "") {
+
+        alert(
+            `🏆 ${tournamentWinner} がポーランドルールで優勝しました！`
+        );
+
+    } else {
+
+        alert(
+            `第${roundCount}試合の結果を追加しました。`
+        );
+    }
 }
 
 
@@ -349,6 +465,32 @@ function sortTeams() {
 
     teams.sort((a, b) => {
 
+        const aIsWinner =
+            tournamentWinner !== "" &&
+            normalizeTeamName(a.name) ===
+            normalizeTeamName(
+                tournamentWinner
+            );
+
+        const bIsWinner =
+            tournamentWinner !== "" &&
+            normalizeTeamName(b.name) ===
+            normalizeTeamName(
+                tournamentWinner
+            );
+
+
+        // 優勝チームを必ず1位
+        if (aIsWinner && !bIsWinner) {
+            return -1;
+        }
+
+        if (!aIsWinner && bIsWinner) {
+            return 1;
+        }
+
+
+        // 2位以下は合計ポイント順
         const pointA =
             Number(a.point || 0);
 
@@ -359,6 +501,8 @@ function sortTeams() {
             return pointB - pointA;
         }
 
+
+        // 同点ならキル数順
         const killsA =
             Number(a.kills || 0);
 
@@ -369,6 +513,8 @@ function sortTeams() {
             return killsB - killsA;
         }
 
+
+        // さらに同点ならチーム名
         return String(a.name).localeCompare(
             String(b.name),
             "ja"
@@ -410,11 +556,23 @@ function displayRanking() {
             "resultRoundText"
         );
 
+    const winnerNotice =
+        document.getElementById(
+            "winnerNotice"
+        );
+
+    const resultWinnerText =
+        document.getElementById(
+            "resultWinnerText"
+        );
+
+
     if (roundElement) {
 
         roundElement.textContent =
             String(roundCount);
     }
+
 
     if (roundText) {
 
@@ -423,7 +581,40 @@ function displayRanking() {
     }
 
 
+    // 優勝表示
+
+    if (tournamentWinner !== "") {
+
+        if (winnerNotice) {
+
+            winnerNotice.hidden = false;
+
+            winnerNotice.textContent =
+                `🏆 WINNER：${tournamentWinner}`;
+        }
+
+        if (resultWinnerText) {
+
+            resultWinnerText.hidden = false;
+
+            resultWinnerText.textContent =
+                `🏆 WINNER：${tournamentWinner}`;
+        }
+
+    } else {
+
+        if (winnerNotice) {
+            winnerNotice.hidden = true;
+        }
+
+        if (resultWinnerText) {
+            resultWinnerText.hidden = true;
+        }
+    }
+
+
     // 通常ランキング
+
     if (teams.length === 0) {
 
         if (ranking) {
@@ -438,6 +629,19 @@ function displayRanking() {
 
         teams.forEach((team, index) => {
 
+            const isWinner =
+                tournamentWinner !== "" &&
+                normalizeTeamName(team.name) ===
+                normalizeTeamName(
+                    tournamentWinner
+                );
+
+            const isMatchPoint =
+                !isWinner &&
+                Number(team.point || 0) >=
+                MATCH_POINT_THRESHOLD;
+
+
             let medal = "";
 
             if (index === 0) {
@@ -448,28 +652,79 @@ function displayRanking() {
                 medal = "🥉";
             }
 
+
+            let rankingClass =
+                "ranking-team";
+
+            if (isWinner) {
+
+                rankingClass +=
+                    " winner-team";
+
+            } else if (isMatchPoint) {
+
+                rankingClass +=
+                    " match-point-team";
+            }
+
+
+            let statusLabel = "";
+
+            if (isWinner) {
+
+                statusLabel = `
+                    <span class="winner-label">
+                        🏆 WINNER
+                    </span>
+                `;
+
+            } else if (isMatchPoint) {
+
+                statusLabel = `
+                    <span class="match-point-label">
+                        🔥 点灯
+                    </span>
+                `;
+            }
+
+
             rankingHtml += `
-                <div class="ranking-team">
+                <div class="${rankingClass}">
 
                     <div class="ranking-position">
                         ${medal} ${index + 1}位
                     </div>
 
                     <div class="ranking-name">
+
                         ${escapeHtml(team.name)}
+
+                        ${statusLabel}
+
                     </div>
 
                     <div class="ranking-points">
-                        KILL：${Number(team.kills || 0)}<br>
-                        RANK：${Number(team.placement || 0)}<br>
-                        TOTAL：${Number(team.point || 0)}pt
+
+                        KILL：
+                        ${Number(team.kills || 0)}
+                        <br>
+
+                        RANK：
+                        ${Number(team.placement || 0)}
+                        <br>
+
+                        TOTAL：
+                        ${Number(team.point || 0)}pt
+
                     </div>
 
                 </div>
             `;
         });
 
+
         if (ranking) {
+
             ranking.innerHTML =
                 rankingHtml;
         }
@@ -477,22 +732,57 @@ function displayRanking() {
 
 
     // 画像用ランキング
+
     let leftHtml = "";
 
     let rightHtml = "";
 
-    teams.slice(0, 20).forEach(
-        (team, index) => {
+
+    teams
+        .slice(0, 20)
+        .forEach((team, index) => {
+
+            const isWinner =
+                tournamentWinner !== "" &&
+                normalizeTeamName(team.name) ===
+                normalizeTeamName(
+                    tournamentWinner
+                );
+
+            const isMatchPoint =
+                !isWinner &&
+                Number(team.point || 0) >=
+                MATCH_POINT_THRESHOLD;
+
 
             let rowClass = "";
 
-            if (index === 0) {
-                rowClass = "top-one";
+            if (isWinner) {
+
+                rowClass =
+                    "tournament-winner";
+
+            } else if (isMatchPoint) {
+
+                rowClass =
+                    "match-point-active";
+
+            } else if (index === 0) {
+
+                rowClass =
+                    "top-one";
+
             } else if (index === 1) {
-                rowClass = "top-two";
+
+                rowClass =
+                    "top-two";
+
             } else if (index === 2) {
-                rowClass = "top-three";
+
+                rowClass =
+                    "top-three";
             }
+
 
             const row = `
                 <tr class="${rowClass}">
@@ -520,29 +810,36 @@ function displayRanking() {
                 </tr>
             `;
 
+
             if (index < 10) {
+
                 leftHtml += row;
+
             } else {
+
                 rightHtml += row;
             }
-        }
-    );
+        });
 
 
-    // 1〜10位を空行で埋める
+    // 1〜10位の空行
+
     for (
-        let i = Math.min(teams.length, 10);
+        let i =
+            Math.min(teams.length, 10);
+
         i < 10;
+
         i++
     ) {
 
-        leftHtml += createEmptyRow(
-            i + 1
-        );
+        leftHtml +=
+            createEmptyRow(i + 1);
     }
 
 
-    // 11〜20位を空行で埋める
+    // 11〜20位の空行
+
     const rightTeamCount =
         Math.max(
             0,
@@ -551,28 +848,35 @@ function displayRanking() {
 
     for (
         let i = rightTeamCount;
+
         i < 10;
+
         i++
     ) {
 
-        rightHtml += createEmptyRow(
-            11 + i
-        );
+        rightHtml +=
+            createEmptyRow(11 + i);
     }
 
+
     if (rankingLeft) {
+
         rankingLeft.innerHTML =
             leftHtml;
     }
 
+
     if (rankingRight) {
+
         rankingRight.innerHTML =
             rightHtml;
     }
 }
 
 
-// 空順位行
+// ================================
+// 空行
+// ================================
 
 function createEmptyRow(position) {
 
@@ -634,12 +938,25 @@ function saveData() {
         "roundCount",
         String(roundCount)
     );
+
+    if (tournamentWinner !== "") {
+
+        localStorage.setItem(
+            "tournamentWinner",
+            tournamentWinner
+        );
+
+    } else {
+
+        localStorage.removeItem(
+            "tournamentWinner"
+        );
+    }
 }
 
 
 // ================================
 // 次の試合用クリア
-// チーム名は残す
 // ================================
 
 function clearRoundScores() {
@@ -728,7 +1045,7 @@ function resetTournament() {
 
     const confirmed =
         confirm(
-            "大会結果をすべて削除します。\n本当にリセットしますか？"
+            "大会結果・点灯状態・優勝結果をすべて削除します。\n本当にリセットしますか？"
         );
 
     if (!confirmed) {
@@ -739,9 +1056,19 @@ function resetTournament() {
 
     roundCount = 0;
 
-    localStorage.removeItem("teams");
+    tournamentWinner = "";
 
-    localStorage.removeItem("roundCount");
+    localStorage.removeItem(
+        "teams"
+    );
+
+    localStorage.removeItem(
+        "roundCount"
+    );
+
+    localStorage.removeItem(
+        "tournamentWinner"
+    );
 
     clearInputsWithoutConfirm();
 
@@ -761,6 +1088,11 @@ function exportCSV() {
 
     teams = loadTeams();
 
+    tournamentWinner =
+        localStorage.getItem(
+            "tournamentWinner"
+        ) || "";
+
     if (teams.length === 0) {
 
         alert(
@@ -773,9 +1105,35 @@ function exportCSV() {
     sortTeams();
 
     let csv =
-        "順位,チーム名,キル数,順位ポイント,合計ポイント,試合数\n";
+        "順位,チーム名,キル数,順位ポイント,合計ポイント,試合数,状態\n";
+
 
     teams.forEach((team, index) => {
+
+        const isWinner =
+            tournamentWinner !== "" &&
+            normalizeTeamName(team.name) ===
+            normalizeTeamName(
+                tournamentWinner
+            );
+
+        const isMatchPoint =
+            !isWinner &&
+            Number(team.point || 0) >=
+            MATCH_POINT_THRESHOLD;
+
+
+        let status = "";
+
+        if (isWinner) {
+
+            status = "優勝";
+
+        } else if (isMatchPoint) {
+
+            status = "点灯";
+        }
+
 
         csv += [
             index + 1,
@@ -783,11 +1141,13 @@ function exportCSV() {
             Number(team.kills || 0),
             Number(team.placement || 0),
             Number(team.point || 0),
-            Number(team.matches || 0)
+            Number(team.matches || 0),
+            status
         ].join(",");
 
         csv += "\n";
     });
+
 
     const blob =
         new Blob(
@@ -848,15 +1208,7 @@ function csvEscape(value) {
 
 async function createImage() {
 
-    // 保存データを読み直す
-    teams = loadTeams();
-
-    roundCount =
-        Number(
-            localStorage.getItem(
-                "roundCount"
-            )
-        ) || 0;
+    reloadSavedData();
 
     if (teams.length === 0) {
 
@@ -930,15 +1282,7 @@ async function createImage() {
 
 async function exportPDF() {
 
-    // 保存データを読み直す
-    teams = loadTeams();
-
-    roundCount =
-        Number(
-            localStorage.getItem(
-                "roundCount"
-            )
-        ) || 0;
+    reloadSavedData();
 
     if (teams.length === 0) {
 
@@ -1046,7 +1390,29 @@ async function exportPDF() {
 
 
 // ================================
-// html2canvas共通処理
+// 保存データ再読み込み
+// ================================
+
+function reloadSavedData() {
+
+    teams = loadTeams();
+
+    roundCount =
+        Number(
+            localStorage.getItem(
+                "roundCount"
+            )
+        ) || 0;
+
+    tournamentWinner =
+        localStorage.getItem(
+            "tournamentWinner"
+        ) || "";
+}
+
+
+// ================================
+// Canvas生成
 // ================================
 
 async function createResultCanvas(
@@ -1065,7 +1431,6 @@ async function createResultCanvas(
 
     await waitForBackgroundImage();
 
-    // 表の書き換えを待つ
     await new Promise(resolve => {
 
         requestAnimationFrame(() => {
@@ -1147,14 +1512,7 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        teams = loadTeams();
-
-        roundCount =
-            Number(
-                localStorage.getItem(
-                    "roundCount"
-                )
-            ) || 0;
+        reloadSavedData();
 
         createTable();
 

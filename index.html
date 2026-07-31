@@ -2,149 +2,195 @@
 <html lang="ja">
 
 <head>
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>result e-Sports APEX集計</title>
+    <title>result e-Sports APEX集計</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-
 <header>
-
-<h1>result e-Sports</h1>
-<p>APEX Tournament System</p>
-
+    <h1>result e-Sports</h1>
+    <p>APEX Tournament System</p>
 </header>
-
-
 
 <main>
 
+    <section class="box">
 
-<h2>大会結果入力</h2>
+        <h2>大会結果入力</h2>
 
+        <p class="description">
+            1試合分の順位とキル数を入力して「一括集計」を押してください。
+            同じチーム名の結果は自動的に加算されます。
+        </p>
 
-<table id="scoreTable">
+        <div class="round-info">
+            集計済み試合数：
+            <strong id="roundCount">0</strong>
+        </div>
 
-<thead>
+        <div class="table-wrapper">
 
-<tr>
+            <table id="scoreTable">
 
-<th>順位</th>
-<th>チーム名</th>
-<th>キル数</th>
+                <thead>
+                    <tr>
+                        <th>順位</th>
+                        <th>チーム名</th>
+                        <th>キル数</th>
+                    </tr>
+                </thead>
 
-</tr>
+                <tbody id="tableBody">
+                </tbody>
 
-</thead>
+            </table>
 
+        </div>
 
-<tbody id="tableBody">
+        <div class="button-area">
 
-</tbody>
+            <button
+                type="button"
+                class="main-button"
+                onclick="calculateAll()"
+            >
+                🏆 一括集計
+            </button>
 
+            <button
+                type="button"
+                onclick="clearRoundInputs()"
+            >
+                入力欄クリア
+            </button>
 
-</table>
+            <button
+                type="button"
+                class="danger-button"
+                onclick="resetTournament()"
+            >
+                全データリセット
+            </button>
 
+        </div>
 
-
-<button onclick="calculateAll()">
-🏆 一括集計
-</button>
-
-
-<button onclick="exportCSV()">
-📄 CSV
-</button>
-
-
-<button onclick="exportPDF()">
-📑 PDF結果表
-</button>
-
-
-
-<h2>ランキング</h2>
-
-
-<div id="ranking" class="ranking">
-
-まだ結果がありません
-
-</div>
-
-
-
-<hr>
-
-
-
-<h2>大会結果画像</h2>
-
-
-
-<button onclick="createImage()" class="image-btn">
-
-🏆 結果画像を作成
-
-</button>
+    </section>
 
 
+    <section class="box">
+
+        <h2>現在のランキング</h2>
+
+        <div id="ranking" class="ranking">
+            まだ結果がありません
+        </div>
+
+    </section>
 
 
-<!-- PNG化する部分 -->
+    <section class="box">
 
-<div id="resultImage">
+        <h2>データ出力</h2>
+
+        <div class="button-area">
+
+            <button
+                type="button"
+                onclick="exportCSV()"
+            >
+                📄 CSV
+            </button>
+
+            <button
+                type="button"
+                onclick="exportPDF()"
+            >
+                📑 PDF
+            </button>
+
+            <button
+                type="button"
+                class="image-button"
+                onclick="createImage()"
+            >
+                🖼️ 結果画像を作成
+            </button>
+
+        </div>
+
+    </section>
 
 
-<h2>
-result e-Sports 大会結果
-</h2>
+    <section class="result-preview-section">
 
+        <h2>大会結果画像プレビュー</h2>
 
+        <div class="result-scroll">
 
-<table id="rankingTable">
+            <!-- PNG・PDFとして保存される部分 -->
+            <div id="resultImage">
 
+                <div class="result-header">
 
-<tr>
+                    <h2>result e-Sports</h2>
 
-<th>順位</th>
-<th>チーム名</th>
-<th>キル</th>
-<th>ポイント</th>
+                    <p>APEX Tournament Result</p>
 
-</tr>
+                    <p id="resultRoundText">
+                        集計試合数：0試合
+                    </p>
 
+                </div>
 
+                <table id="rankingTable">
 
-</table>
+                    <thead>
+                        <tr>
+                            <th>順位</th>
+                            <th>チーム名</th>
+                            <th>キル</th>
+                            <th>ポイント</th>
+                        </tr>
+                    </thead>
 
+                    <tbody id="rankingTableBody">
 
+                        <tr class="empty-row">
+                            <td colspan="4">
+                                まだ結果がありません
+                            </td>
+                        </tr>
 
-</div>
+                    </tbody>
 
+                </table>
 
+            </div>
+
+        </div>
+
+    </section>
 
 </main>
 
 
+<!-- PNG生成ライブラリ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<script src="script.js"></script>
-
-
+<!-- PDF生成ライブラリ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-
+<!-- 自分のJavaScript -->
+<script src="script.js"></script>
 
 </body>
-
 </html>

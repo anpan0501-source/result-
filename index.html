@@ -1,77 +1,80 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>result e-Sports APEX集計</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
 
+
 <header>
+
 <h1>result e-Sports</h1>
 <p>APEX Tournament System</p>
+
 </header>
+
 
 
 <main>
 
+
 <h2>大会結果入力</h2>
 
+
 <table id="scoreTable">
-    <thead>
-        <tr>
-            <th>順位</th>
-            <th>チーム名</th>
-            <th>キル数</th>
-        </tr>
-    </thead>
 
-    <tbody id="tableBody">
+<thead>
 
-    </tbody>
+<tr>
+
+<th>順位</th>
+<th>チーム名</th>
+<th>キル数</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tableBody">
+
+</tbody>
+
+
 </table>
+
+
 
 <button onclick="calculateAll()">
 🏆 一括集計
 </button>
 
+
 <button onclick="exportCSV()">
 📄 CSV
 </button>
 
+
 <button onclick="exportPDF()">
-📑 PDF
+📑 PDF結果表
 </button>
 
-<div id="ranking" class="ranking"></div>
-
-<div class="box">
-
-<label>チーム名</label>
-<input id="team" type="text" placeholder="チーム名">
-
-
-<label>順位</label>
-<input id="rank" type="number" placeholder="順位">
-
-<label>キル数</label>
-<input id="kills" type="number" placeholder="キル数">
-
-<button onclick="calculatePoint()">
-ポイント計算
-
-
-
-</div>
 
 
 <h2>ランキング</h2>
+
 
 <div id="ranking" class="ranking">
 
@@ -81,31 +84,67 @@
 
 
 
+<hr>
+
+
+
+<h2>大会結果画像</h2>
+
+
+
+<button onclick="createImage()" class="image-btn">
+
+🏆 結果画像を作成
+
+</button>
+
+
+
+
+<!-- PNG化する部分 -->
+
+<div id="resultImage">
+
+
+<h2>
+result e-Sports 大会結果
+</h2>
+
+
+
+<table id="rankingTable">
+
+
+<tr>
+
+<th>順位</th>
+<th>チーム名</th>
+<th>キル</th>
+<th>ポイント</th>
+
+</tr>
+
+
+
+</table>
+
+
+
+</div>
+
+
 
 </main>
 
+
+
 <script src="script.js"></script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<button onclick="exportPDF()">
-PDF結果表
-<button onclick="createImage()" class="image-btn">
-🏆 結果画像を作成
-</button>
 
-<div id="resultImage">
-    <!-- ここを画像化します -->
-    <h2>result e-Sports 大会結果</h2>
 
-    <table id="rankingTable">
-        <tr>
-            <th>順位</th>
-            <th>チーム名</th>
-            <th>キル</th>
-            <th>ポイント</th>
-        </tr>
-    </table>
-</div>
-</button>
 </body>
+
 </html>

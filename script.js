@@ -1,13 +1,21 @@
 "use strict";
 
 
+// ================================
+// 初期データ
+// ================================
+
 let teams = loadTeams();
 
 let roundCount =
-    Number(localStorage.getItem("roundCount")) || 0;
+    Number(
+        localStorage.getItem("roundCount")
+    ) || 0;
 
 
-// 保存データ読み込み
+// ================================
+// 保存済みチームデータを読み込む
+// ================================
 
 function loadTeams() {
 
@@ -34,7 +42,9 @@ function loadTeams() {
 }
 
 
+// ================================
 // 順位ポイント
+// ================================
 
 function getPlacementPoint(rank) {
 
@@ -60,7 +70,9 @@ function getPlacementPoint(rank) {
 }
 
 
-// 20チーム入力表
+// ================================
+// 20チーム入力欄作成
+// ================================
 
 function createTable() {
 
@@ -68,7 +80,11 @@ function createTable() {
         document.getElementById("tableBody");
 
     if (!body) {
-        console.error("tableBodyが見つかりません。");
+
+        console.error(
+            "tableBodyが見つかりません。"
+        );
+
         return;
     }
 
@@ -86,7 +102,7 @@ function createTable() {
                         min="1"
                         max="20"
                         inputmode="numeric"
-                        aria-label="${i}行目の順位"
+                        placeholder="${i}"
                     >
                 </td>
 
@@ -96,7 +112,6 @@ function createTable() {
                         type="text"
                         placeholder="チーム名"
                         autocomplete="off"
-                        aria-label="${i}行目のチーム名"
                     >
                 </td>
 
@@ -107,7 +122,6 @@ function createTable() {
                         min="0"
                         value="0"
                         inputmode="numeric"
-                        aria-label="${i}行目のキル数"
                     >
                 </td>
 
@@ -121,7 +135,9 @@ function createTable() {
 }
 
 
-// 保存チーム名を入力欄へ復元
+// ================================
+// 保存済みチーム名を入力欄へ戻す
+// ================================
 
 function restoreTeamNames() {
 
@@ -143,11 +159,13 @@ function restoreTeamNames() {
 }
 
 
+// ================================
 // 一括集計
+// ================================
 
 function calculateAll() {
 
-    let count = 0;
+    let inputCount = 0;
 
     const enteredNames =
         new Set();
@@ -155,13 +173,19 @@ function calculateAll() {
     for (let i = 1; i <= 20; i++) {
 
         const teamInput =
-            document.getElementById(`team${i}`);
+            document.getElementById(
+                `team${i}`
+            );
 
         const rankInput =
-            document.getElementById(`rank${i}`);
+            document.getElementById(
+                `rank${i}`
+            );
 
         const killInput =
-            document.getElementById(`kill${i}`);
+            document.getElementById(
+                `kill${i}`
+            );
 
         if (
             !teamInput ||
@@ -174,6 +198,7 @@ function calculateAll() {
         const name =
             teamInput.value.trim();
 
+        // チーム名が空なら無視
         if (name === "") {
             continue;
         }
@@ -187,12 +212,13 @@ function calculateAll() {
         const normalizedName =
             name.toLocaleLowerCase("ja");
 
+        // 同じ試合内で同名チームを防止
         if (
             enteredNames.has(normalizedName)
         ) {
 
             alert(
-                `同じチーム名が複数あります。\n${name}`
+                `同じチーム名が複数入力されています。\n${name}`
             );
 
             return;
@@ -200,6 +226,7 @@ function calculateAll() {
 
         enteredNames.add(normalizedName);
 
+        // 順位確認
         if (
             !Number.isInteger(rank) ||
             rank < 1 ||
@@ -213,6 +240,7 @@ function calculateAll() {
             return;
         }
 
+        // キル数確認
         if (
             !Number.isFinite(kills) ||
             kills < 0
@@ -231,45 +259,64 @@ function calculateAll() {
         const total =
             placement + kills;
 
-        const index =
+        const teamIndex =
             teams.findIndex(
                 team =>
-                    team.name
+                    String(team.name)
                         .toLocaleLowerCase("ja") ===
                     normalizedName
             );
 
-        if (index >= 0) {
+        if (teamIndex >= 0) {
 
-            teams[index].kills += kills;
-
-            teams[index].placement += placement;
-
-            teams[index].point += total;
-
-            teams[index].lastRank = rank;
-
-            teams[index].matches =
+            // 既存チームへ加算
+            teams[teamIndex].kills =
                 Number(
-                    teams[index].matches || 0
+                    teams[teamIndex].kills || 0
+                ) + kills;
+
+            teams[teamIndex].placement =
+                Number(
+                    teams[teamIndex].placement || 0
+                ) + placement;
+
+            teams[teamIndex].point =
+                Number(
+                    teams[teamIndex].point || 0
+                ) + total;
+
+            teams[teamIndex].matches =
+                Number(
+                    teams[teamIndex].matches || 0
                 ) + 1;
+
+            teams[teamIndex].lastRank =
+                rank;
 
         } else {
 
+            // 新規チーム追加
             teams.push({
+
                 name: name,
+
                 kills: kills,
+
                 placement: placement,
+
                 point: total,
-                lastRank: rank,
-                matches: 1
+
+                matches: 1,
+
+                lastRank: rank
+
             });
         }
 
-        count++;
+        inputCount++;
     }
 
-    if (count === 0) {
+    if (inputCount === 0) {
 
         alert(
             "チーム名・順位・キル数を入力してください。"
@@ -289,50 +336,74 @@ function calculateAll() {
     clearRoundScores();
 
     alert(
-        `第${roundCount}試合を追加しました。`
+        `第${roundCount}試合の結果を追加しました。`
     );
 }
 
 
+// ================================
 // ランキング並び替え
+// ================================
 
 function sortTeams() {
 
     teams.sort((a, b) => {
 
-        if (b.point !== a.point) {
-            return b.point - a.point;
+        const pointA =
+            Number(a.point || 0);
+
+        const pointB =
+            Number(b.point || 0);
+
+        if (pointB !== pointA) {
+            return pointB - pointA;
         }
 
-        if (b.kills !== a.kills) {
-            return b.kills - a.kills;
+        const killsA =
+            Number(a.kills || 0);
+
+        const killsB =
+            Number(b.kills || 0);
+
+        if (killsB !== killsA) {
+            return killsB - killsA;
         }
 
-        return a.name.localeCompare(
-            b.name,
+        return String(a.name).localeCompare(
+            String(b.name),
             "ja"
         );
     });
 }
 
 
+// ================================
 // ランキング表示
+// ================================
 
 function displayRanking() {
 
     sortTeams();
 
     const ranking =
-        document.getElementById("ranking");
+        document.getElementById(
+            "ranking"
+        );
 
-    const left =
-        document.getElementById("rankingLeft");
+    const rankingLeft =
+        document.getElementById(
+            "rankingLeft"
+        );
 
-    const right =
-        document.getElementById("rankingRight");
+    const rankingRight =
+        document.getElementById(
+            "rankingRight"
+        );
 
     const roundElement =
-        document.getElementById("roundCount");
+        document.getElementById(
+            "roundCount"
+        );
 
     const roundText =
         document.getElementById(
@@ -340,206 +411,202 @@ function displayRanking() {
         );
 
     if (roundElement) {
+
         roundElement.textContent =
             String(roundCount);
     }
 
     if (roundText) {
+
         roundText.textContent =
             `${roundCount} MATCHES`;
     }
 
+
+    // 通常ランキング
     if (teams.length === 0) {
 
         if (ranking) {
+
             ranking.textContent =
                 "まだ結果がありません";
         }
 
-        const empty = `
-            <tr class="empty-result">
-                <td colspan="5">
-                    NO RESULT
-                </td>
-            </tr>
-        `;
+    } else {
 
-        if (left) {
-            left.innerHTML = empty;
+        let rankingHtml = "";
+
+        teams.forEach((team, index) => {
+
+            let medal = "";
+
+            if (index === 0) {
+                medal = "🥇";
+            } else if (index === 1) {
+                medal = "🥈";
+            } else if (index === 2) {
+                medal = "🥉";
+            }
+
+            rankingHtml += `
+                <div class="ranking-team">
+
+                    <div class="ranking-position">
+                        ${medal} ${index + 1}位
+                    </div>
+
+                    <div class="ranking-name">
+                        ${escapeHtml(team.name)}
+                    </div>
+
+                    <div class="ranking-points">
+                        KILL：${Number(team.kills || 0)}<br>
+                        RANK：${Number(team.placement || 0)}<br>
+                        TOTAL：${Number(team.point || 0)}pt
+                    </div>
+
+                </div>
+            `;
+        });
+
+        if (ranking) {
+            ranking.innerHTML =
+                rankingHtml;
         }
-
-        if (right) {
-            right.innerHTML = empty;
-        }
-
-        return;
     }
 
-    let normalHtml = "";
 
+    // 画像用ランキング
     let leftHtml = "";
 
     let rightHtml = "";
 
-    teams.forEach((team, index) => {
+    teams.slice(0, 20).forEach(
+        (team, index) => {
 
-        let medal = "";
+            let rowClass = "";
 
-        if (index === 0) {
-            medal = "🥇";
-        } else if (index === 1) {
-            medal = "🥈";
-        } else if (index === 2) {
-            medal = "🥉";
+            if (index === 0) {
+                rowClass = "top-one";
+            } else if (index === 1) {
+                rowClass = "top-two";
+            } else if (index === 2) {
+                rowClass = "top-three";
+            }
+
+            const row = `
+                <tr class="${rowClass}">
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(team.name)}
+                    </td>
+
+                    <td>
+                        ${Number(team.kills || 0)}
+                    </td>
+
+                    <td>
+                        ${Number(team.placement || 0)}
+                    </td>
+
+                    <td>
+                        ${Number(team.point || 0)}
+                    </td>
+
+                </tr>
+            `;
+
+            if (index < 10) {
+                leftHtml += row;
+            } else {
+                rightHtml += row;
+            }
         }
-
-        normalHtml += `
-            <div class="ranking-team">
-
-                <div class="ranking-position">
-                    ${medal} ${index + 1}位
-                </div>
-
-                <div class="ranking-name">
-                    ${escapeHtml(team.name)}
-                </div>
-
-                <div class="ranking-points">
-                    KILL：${team.kills}<br>
-                    RANK：${team.placement}<br>
-                    TOTAL：${team.point}pt
-                </div>
-
-            </div>
-        `;
-
-        let rowClass = "";
-
-        if (index === 0) {
-            rowClass = "top-one";
-        } else if (index === 1) {
-            rowClass = "top-two";
-        } else if (index === 2) {
-            rowClass = "top-three";
-        }
-
-        const row = `
-            <tr class="${rowClass}">
-
-                <td>
-                    ${index + 1}
-                </td>
-
-                <td>
-                    ${escapeHtml(team.name)}
-                </td>
-
-                <td>
-                    ${team.kills}
-                </td>
-
-                <td>
-                    ${team.placement}
-                </td>
-
-                <td>
-                    ${team.point}
-                </td>
-
-            </tr>
-        `;
-
-        if (index < 10) {
-            leftHtml += row;
-        } else {
-            rightHtml += row;
-        }
-    });
-
-    if (ranking) {
-        ranking.innerHTML =
-            normalHtml;
-    }
-
-    if (left) {
-
-        left.innerHTML =
-            fillResultRows(
-                leftHtml,
-                Math.min(teams.length, 10),
-                10,
-                1
-            );
-    }
-
-    if (right) {
-
-        const rightCount =
-            Math.max(
-                0,
-                teams.length - 10
-            );
-
-        right.innerHTML =
-            fillResultRows(
-                rightHtml,
-                rightCount,
-                10,
-                11
-            );
-    }
-}
+    );
 
 
-// 空いている順位を空行で埋める
-
-function fillResultRows(
-    html,
-    currentCount,
-    targetCount,
-    startNumber
-) {
-
-    let result = html;
-
+    // 1〜10位を空行で埋める
     for (
-        let i = currentCount;
-        i < targetCount;
+        let i = Math.min(teams.length, 10);
+        i < 10;
         i++
     ) {
 
-        result += `
-            <tr>
-
-                <td>
-                    ${startNumber + i}
-                </td>
-
-                <td>
-                    -
-                </td>
-
-                <td>
-                    0
-                </td>
-
-                <td>
-                    0
-                </td>
-
-                <td>
-                    0
-                </td>
-
-            </tr>
-        `;
+        leftHtml += createEmptyRow(
+            i + 1
+        );
     }
 
-    return result;
+
+    // 11〜20位を空行で埋める
+    const rightTeamCount =
+        Math.max(
+            0,
+            Math.min(teams.length, 20) - 10
+        );
+
+    for (
+        let i = rightTeamCount;
+        i < 10;
+        i++
+    ) {
+
+        rightHtml += createEmptyRow(
+            11 + i
+        );
+    }
+
+    if (rankingLeft) {
+        rankingLeft.innerHTML =
+            leftHtml;
+    }
+
+    if (rankingRight) {
+        rankingRight.innerHTML =
+            rightHtml;
+    }
 }
 
 
-// HTML安全化
+// 空順位行
+
+function createEmptyRow(position) {
+
+    return `
+        <tr>
+
+            <td>
+                ${position}
+            </td>
+
+            <td>
+                -
+            </td>
+
+            <td>
+                0
+            </td>
+
+            <td>
+                0
+            </td>
+
+            <td>
+                0
+            </td>
+
+        </tr>
+    `;
+}
+
+
+// ================================
+// HTML特殊文字対策
+// ================================
 
 function escapeHtml(value) {
 
@@ -552,7 +619,9 @@ function escapeHtml(value) {
 }
 
 
-// データ保存
+// ================================
+// 保存
+// ================================
 
 function saveData() {
 
@@ -568,30 +637,39 @@ function saveData() {
 }
 
 
-// 次の試合用に順位とキルだけクリア
+// ================================
+// 次の試合用クリア
+// チーム名は残す
+// ================================
 
 function clearRoundScores() {
 
     for (let i = 1; i <= 20; i++) {
 
-        const rank =
-            document.getElementById(`rank${i}`);
+        const rankInput =
+            document.getElementById(
+                `rank${i}`
+            );
 
-        const kill =
-            document.getElementById(`kill${i}`);
+        const killInput =
+            document.getElementById(
+                `kill${i}`
+            );
 
-        if (rank) {
-            rank.value = "";
+        if (rankInput) {
+            rankInput.value = "";
         }
 
-        if (kill) {
-            kill.value = "0";
+        if (killInput) {
+            killInput.value = "0";
         }
     }
 }
 
 
+// ================================
 // 入力欄すべてクリア
+// ================================
 
 function clearRoundInputs() {
 
@@ -612,31 +690,39 @@ function clearInputsWithoutConfirm() {
 
     for (let i = 1; i <= 20; i++) {
 
-        const team =
-            document.getElementById(`team${i}`);
+        const teamInput =
+            document.getElementById(
+                `team${i}`
+            );
 
-        const rank =
-            document.getElementById(`rank${i}`);
+        const rankInput =
+            document.getElementById(
+                `rank${i}`
+            );
 
-        const kill =
-            document.getElementById(`kill${i}`);
+        const killInput =
+            document.getElementById(
+                `kill${i}`
+            );
 
-        if (team) {
-            team.value = "";
+        if (teamInput) {
+            teamInput.value = "";
         }
 
-        if (rank) {
-            rank.value = "";
+        if (rankInput) {
+            rankInput.value = "";
         }
 
-        if (kill) {
-            kill.value = "0";
+        if (killInput) {
+            killInput.value = "0";
         }
     }
 }
 
 
-// 全データリセット
+// ================================
+// 大会データ全リセット
+// ================================
 
 function resetTournament() {
 
@@ -667,14 +753,18 @@ function resetTournament() {
 }
 
 
+// ================================
 // CSV出力
+// ================================
 
 function exportCSV() {
+
+    teams = loadTeams();
 
     if (teams.length === 0) {
 
         alert(
-            "出力するデータがありません。"
+            "出力する集計結果がありません。"
         );
 
         return;
@@ -690,10 +780,10 @@ function exportCSV() {
         csv += [
             index + 1,
             csvEscape(team.name),
-            team.kills,
-            team.placement,
-            team.point,
-            team.matches || 0
+            Number(team.kills || 0),
+            Number(team.placement || 0),
+            Number(team.point || 0),
+            Number(team.matches || 0)
         ].join(",");
 
         csv += "\n";
@@ -729,6 +819,8 @@ function exportCSV() {
 }
 
 
+// CSV特殊文字対策
+
 function csvEscape(value) {
 
     const text =
@@ -750,18 +842,32 @@ function csvEscape(value) {
 }
 
 
+// ================================
 // PNG画像生成
+// ================================
 
 async function createImage() {
+
+    // 保存データを読み直す
+    teams = loadTeams();
+
+    roundCount =
+        Number(
+            localStorage.getItem(
+                "roundCount"
+            )
+        ) || 0;
 
     if (teams.length === 0) {
 
         alert(
-            "先に大会結果を集計してください。"
+            "集計結果がありません。\n先に「一括集計」を押してください。"
         );
 
         return;
     }
+
+    sortTeams();
 
     displayRanking();
 
@@ -782,7 +888,9 @@ async function createImage() {
     try {
 
         const canvas =
-            await createResultCanvas(target);
+            await createResultCanvas(
+                target
+            );
 
         const link =
             document.createElement("a");
@@ -805,7 +913,7 @@ async function createImage() {
     } catch (error) {
 
         console.error(
-            "PNG生成エラー",
+            "画像生成エラー",
             error
         );
 
@@ -816,14 +924,26 @@ async function createImage() {
 }
 
 
+// ================================
 // PDF出力
+// ================================
 
 async function exportPDF() {
+
+    // 保存データを読み直す
+    teams = loadTeams();
+
+    roundCount =
+        Number(
+            localStorage.getItem(
+                "roundCount"
+            )
+        ) || 0;
 
     if (teams.length === 0) {
 
         alert(
-            "出力するデータがありません。"
+            "集計結果がありません。\n先に「一括集計」を押してください。"
         );
 
         return;
@@ -840,6 +960,8 @@ async function exportPDF() {
 
         return;
     }
+
+    sortTeams();
 
     displayRanking();
 
@@ -860,9 +982,11 @@ async function exportPDF() {
     try {
 
         const canvas =
-            await createResultCanvas(target);
+            await createResultCanvas(
+                target
+            );
 
-        const image =
+        const imageData =
             canvas.toDataURL(
                 "image/png",
                 1
@@ -873,18 +997,34 @@ async function exportPDF() {
 
         const pdf =
             new jsPDF({
-                orientation: "landscape",
-                unit: "px",
-                format: [1920, 1080]
+
+                orientation:
+                    "landscape",
+
+                unit:
+                    "px",
+
+                format:
+                    [1920, 1080],
+
+                hotfixes:
+                    ["px_scaling"]
+
             });
 
+        const pageWidth =
+            pdf.internal.pageSize.getWidth();
+
+        const pageHeight =
+            pdf.internal.pageSize.getHeight();
+
         pdf.addImage(
-            image,
+            imageData,
             "PNG",
             0,
             0,
-            1920,
-            1080
+            pageWidth,
+            pageHeight
         );
 
         pdf.save(
@@ -905,12 +1045,17 @@ async function exportPDF() {
 }
 
 
+// ================================
 // html2canvas共通処理
+// ================================
 
-async function createResultCanvas(target) {
+async function createResultCanvas(
+    target
+) {
 
     if (
-        typeof html2canvas !== "function"
+        typeof html2canvas !==
+        "function"
     ) {
 
         throw new Error(
@@ -920,31 +1065,52 @@ async function createResultCanvas(target) {
 
     await waitForBackgroundImage();
 
+    // 表の書き換えを待つ
     await new Promise(resolve => {
 
         requestAnimationFrame(() => {
 
-            requestAnimationFrame(resolve);
+            requestAnimationFrame(
+                resolve
+            );
 
         });
 
     });
 
-    return html2canvas(target, {
-        scale: 1,
-        width: 1920,
-        height: 1080,
-        windowWidth: 1920,
-        windowHeight: 1080,
-        backgroundColor: "#050914",
-        useCORS: true,
-        allowTaint: false,
-        logging: false
-    });
+    return html2canvas(
+        target,
+        {
+            scale: 1,
+
+            width: 1920,
+
+            height: 1080,
+
+            windowWidth: 1920,
+
+            windowHeight: 1080,
+
+            backgroundColor:
+                "#050914",
+
+            useCORS: true,
+
+            allowTaint: false,
+
+            logging: false,
+
+            scrollX: 0,
+
+            scrollY: 0
+        }
+    );
 }
 
 
-// IMG_2769.pngの読み込みを待つ
+// ================================
+// 背景画像読み込み待機
+// ================================
 
 function waitForBackgroundImage() {
 
@@ -953,7 +1119,9 @@ function waitForBackgroundImage() {
         const image =
             new Image();
 
-        image.onload = resolve;
+        image.onload = () => {
+            resolve();
+        };
 
         image.onerror = () => {
 
@@ -971,11 +1139,22 @@ function waitForBackgroundImage() {
 }
 
 
+// ================================
 // ページ読み込み時
+// ================================
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        teams = loadTeams();
+
+        roundCount =
+            Number(
+                localStorage.getItem(
+                    "roundCount"
+                )
+            ) || 0;
 
         createTable();
 

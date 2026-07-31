@@ -29,9 +29,7 @@ body {
 }
 
 
-/* =========================
-   サイトヘッダー
-========================= */
+/* サイト上部 */
 
 .site-header {
     padding: 28px 15px;
@@ -59,9 +57,7 @@ body {
 }
 
 
-/* =========================
-   メイン画面
-========================= */
+/* メイン */
 
 main {
     width: min(1150px, 95%);
@@ -101,14 +97,12 @@ h2 {
 }
 
 .match-point-description {
-    color: #ffb2c2 !important;
-    font-weight: 700;
+    color: #ff9db4 !important;
+    font-weight: 800;
 }
 
 
-/* =========================
-   試合数
-========================= */
+/* 試合数 */
 
 .round-badge {
     min-width: 115px;
@@ -132,9 +126,7 @@ h2 {
 }
 
 
-/* =========================
-   優勝表示
-========================= */
+/* 優勝表示 */
 
 .winner-notice {
     margin-top: 20px;
@@ -143,11 +135,11 @@ h2 {
     background:
         linear-gradient(
             135deg,
-            #b47600,
+            #a66a00,
             #ffcf3f
         );
 
-    color: #171000;
+    color: #1f1500;
 
     border: 2px solid #fff1a2;
     border-radius: 10px;
@@ -159,9 +151,7 @@ h2 {
 }
 
 
-/* =========================
-   入力テーブル
-========================= */
+/* 入力テーブル */
 
 .input-table-wrapper,
 .result-scroll {
@@ -217,9 +207,7 @@ h2 {
 }
 
 
-/* =========================
-   ボタン
-========================= */
+/* ボタン */
 
 .button-area {
     display: flex;
@@ -271,9 +259,7 @@ button:active {
 }
 
 
-/* =========================
-   通常ランキング
-========================= */
+/* 通常ランキング */
 
 .ranking-list {
     display: grid;
@@ -284,7 +270,7 @@ button:active {
     display: grid;
 
     grid-template-columns:
-        85px
+        90px
         minmax(150px, 1fr)
         auto;
 
@@ -295,30 +281,44 @@ button:active {
 
     background: #111c2e;
 
-    border-left: 5px solid #168cff;
+    border-left: 6px solid #168cff;
     border-radius: 8px;
 }
+
+
+/* 50ポイント点灯チーム */
 
 .ranking-team.match-point-team {
     background:
         linear-gradient(
             90deg,
-            rgba(120, 5, 34, 0.95),
-            rgba(50, 14, 34, 0.95)
+            rgba(132, 6, 39, 0.98),
+            rgba(52, 13, 34, 0.98)
         );
 
     border-left-color: #ff315f;
+
+    box-shadow:
+        inset 0 0 22px
+        rgba(255, 45, 95, 0.18);
 }
+
+
+/* ポーランドルール優勝チーム */
 
 .ranking-team.winner-team {
     background:
         linear-gradient(
             90deg,
-            rgba(181, 120, 0, 0.96),
-            rgba(71, 49, 7, 0.96)
+            rgba(190, 127, 0, 0.98),
+            rgba(72, 49, 5, 0.98)
         );
 
     border-left-color: #ffdd62;
+
+    box-shadow:
+        inset 0 0 24px
+        rgba(255, 226, 100, 0.25);
 }
 
 .ranking-position {
@@ -341,7 +341,7 @@ button:active {
     display: inline-block;
 
     margin-left: 8px;
-    padding: 3px 8px;
+    padding: 4px 9px;
 
     border-radius: 999px;
 
@@ -360,9 +360,7 @@ button:active {
 }
 
 
-/* =========================
-   プレビュー
-========================= */
+/* プレビュー */
 
 .preview-note {
     color: #aebcd0;
@@ -373,9 +371,7 @@ button:active {
 }
 
 
-/* =========================
-   1920×1080 結果画像
-========================= */
+/* 1920×1080 結果画像 */
 
 #resultImage {
     position: relative;
@@ -403,14 +399,12 @@ button:active {
         linear-gradient(
             180deg,
             rgba(3, 9, 22, 0.34),
-            rgba(3, 8, 20, 0.65)
+            rgba(3, 8, 20, 0.67)
         );
 }
 
 
-/* =========================
-   結果画像上部
-========================= */
+/* 結果上部 */
 
 .result-top {
     display: grid;
@@ -497,7 +491,7 @@ button:active {
     background:
         linear-gradient(
             90deg,
-            #d28c00,
+            #c98200,
             #ffdb57
         );
 
@@ -537,9 +531,7 @@ button:active {
 }
 
 
-/* =========================
-   左右ランキング表
-========================= */
+/* 左右結果表 */
 
 .result-columns {
     display: grid;
@@ -583,7 +575,7 @@ button:active {
 
     padding: 7px;
 
-    background: rgba(24, 34, 53, 0.82);
+    background: rgba(24, 34, 53, 0.84);
     color: #ffffff;
 
     border: 2px solid rgba(212, 242, 255, 0.82);
@@ -599,49 +591,47 @@ button:active {
 }
 
 .result-table tbody tr:nth-child(even) td {
-    background: rgba(37, 49, 70, 0.84);
+    background: rgba(37, 49, 70, 0.86);
 }
 
 
-/* 50ポイント以上・点灯 */
+/* 点灯 */
 
 .result-table tbody tr.match-point-active td {
     background:
         linear-gradient(
             90deg,
-            rgba(211, 17, 63, 0.96),
-            rgba(93, 5, 31, 0.94)
+            rgba(214, 17, 63, 0.98),
+            rgba(91, 4, 31, 0.96)
         );
 
     border-color: #ff7898;
 
     box-shadow:
         inset 0 0 20px
-        rgba(255, 44, 91, 0.35);
+        rgba(255, 44, 91, 0.38);
 }
 
 
-/* 優勝チーム */
+/* 優勝 */
 
 .result-table tbody tr.tournament-winner td {
     background:
         linear-gradient(
             90deg,
-            rgba(255, 192, 31, 0.98),
-            rgba(145, 87, 3, 0.96)
+            rgba(255, 192, 31, 0.99),
+            rgba(145, 87, 3, 0.97)
         );
-
-    color: #ffffff;
 
     border-color: #fff3a5;
 
     box-shadow:
         inset 0 0 25px
-        rgba(255, 235, 133, 0.58);
+        rgba(255, 235, 133, 0.6);
 }
 
 
-/* 上位3チーム */
+/* 通常の上位3位 */
 
 .result-table tbody tr.top-one td {
     background:
@@ -705,9 +695,7 @@ button:active {
 }
 
 
-/* =========================
-   結果画像下部
-========================= */
+/* 結果下部 */
 
 .result-footer {
     display: flex;
@@ -728,9 +716,7 @@ button:active {
 }
 
 
-/* =========================
-   スマホ対応
-========================= */
+/* スマホ */
 
 @media (max-width: 650px) {
 
@@ -762,12 +748,19 @@ button:active {
 
     .ranking-team {
         grid-template-columns:
-            70px
+            80px
             1fr;
     }
 
     .ranking-points {
         grid-column: 2;
         text-align: left;
+    }
+
+    .match-point-label,
+    .winner-label {
+        display: block;
+        width: fit-content;
+        margin: 6px 0 0;
     }
 }

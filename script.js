@@ -272,8 +272,11 @@ function displayRanking(){
 
 
 
-    document.getElementById("rankingTable").innerHTML =
-    tableHtml;
+    const imageTable = document.getElementById("rankingTable");
+if(imageTable){
+    imageTable.innerHTML = tableHtml;
+
+}
 
 
 }

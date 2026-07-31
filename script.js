@@ -434,10 +434,12 @@ async function exportPDF(){
 
 function createImage(){
 
+    // 最新ランキングを反映
+    displayRanking();
+
 
     const target =
     document.getElementById("resultImage");
-
 
 
     html2canvas(target).then(canvas=>{
@@ -447,22 +449,18 @@ function createImage(){
         document.createElement("a");
 
 
-
         link.download =
         "result-esports-result.png";
-
 
 
         link.href =
         canvas.toDataURL();
 
 
-
         link.click();
 
 
     });
-
 
 }
 

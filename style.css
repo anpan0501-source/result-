@@ -9,6 +9,7 @@ html {
 body {
     margin: 0;
     min-height: 100vh;
+
     background:
         radial-gradient(
             circle at top,
@@ -16,7 +17,9 @@ body {
             #070b14 45%,
             #03050a 100%
         );
+
     color: #ffffff;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -26,24 +29,28 @@ body {
 }
 
 
-/* サイト上部 */
+/* =========================
+   サイトヘッダー
+========================= */
 
 .site-header {
     padding: 28px 15px;
+
     background:
         linear-gradient(
             135deg,
             #07142b,
             #0066ff
         );
+
     border-bottom: 3px solid #3c9cff;
+
     text-align: center;
 }
 
 .site-header h1 {
     margin: 0;
     font-size: 34px;
-    letter-spacing: 1px;
 }
 
 .site-header p {
@@ -52,7 +59,9 @@ body {
 }
 
 
-/* メイン画面 */
+/* =========================
+   メイン画面
+========================= */
 
 main {
     width: min(1150px, 95%);
@@ -63,9 +72,12 @@ main {
 .preview-panel {
     margin-bottom: 25px;
     padding: 22px;
+
     background: rgba(12, 19, 33, 0.94);
+
     border: 1px solid #243c61;
     border-radius: 14px;
+
     box-shadow:
         0 12px 30px
         rgba(0, 0, 0, 0.32);
@@ -88,24 +100,34 @@ h2 {
     line-height: 1.7;
 }
 
+
+/* 試合数表示 */
+
 .round-badge {
     min-width: 115px;
     padding: 12px;
+
     background: #111f37;
+
     border: 1px solid #2f6dc5;
     border-radius: 10px;
+
     text-align: center;
 }
 
 .round-badge strong {
     display: block;
+
     margin: 4px 0;
+
     color: #62b4ff;
     font-size: 30px;
 }
 
 
-/* 入力テーブル */
+/* =========================
+   入力テーブル
+========================= */
 
 .input-table-wrapper,
 .result-scroll {
@@ -116,32 +138,42 @@ h2 {
 #scoreTable {
     width: 100%;
     min-width: 600px;
+
     margin-top: 20px;
+
     border-collapse: collapse;
 }
 
 #scoreTable th {
     padding: 13px 8px;
+
     background: #0066ff;
     color: #ffffff;
+
     border: 1px solid #2e85ff;
 }
 
 #scoreTable td {
     padding: 8px;
+
     background: #101a2b;
+
     border: 1px solid #293a57;
 }
 
 #scoreTable input {
     width: 100%;
     min-width: 70px;
-    padding: 11px;
+
     margin: 0;
+    padding: 11px;
+
     background: #070b13;
     color: #ffffff;
+
     border: 1px solid #354a69;
     border-radius: 7px;
+
     font-size: 16px;
 }
 
@@ -151,24 +183,32 @@ h2 {
 }
 
 
-/* ボタン */
+/* =========================
+   ボタン
+========================= */
 
 .button-area {
     display: flex;
     flex-wrap: wrap;
     gap: 11px;
+
     margin-top: 20px;
 }
 
 button {
     min-height: 46px;
+
     padding: 11px 19px;
+
     background: #17263d;
     color: #ffffff;
+
     border: 1px solid #365477;
     border-radius: 8px;
+
     font-size: 15px;
     font-weight: 700;
+
     cursor: pointer;
 }
 
@@ -187,6 +227,7 @@ button:active {
             #005be7,
             #168cff
         );
+
     border-color: #4ca1ff;
 }
 
@@ -196,7 +237,9 @@ button:active {
 }
 
 
-/* 通常ランキング */
+/* =========================
+   通常ランキング
+========================= */
 
 .ranking-list {
     display: grid;
@@ -205,35 +248,42 @@ button:active {
 
 .ranking-team {
     display: grid;
+
     grid-template-columns:
         85px
         minmax(150px, 1fr)
         auto;
+
     align-items: center;
     gap: 12px;
+
     padding: 14px;
+
     background: #111c2e;
+
     border-left: 5px solid #168cff;
     border-radius: 8px;
 }
 
 .ranking-position {
-    font-weight: 800;
     font-size: 18px;
+    font-weight: 800;
 }
 
 .ranking-name {
-    font-weight: 800;
     font-size: 17px;
+    font-weight: 800;
 }
 
 .ranking-points {
-    text-align: right;
     color: #dce9ff;
+    text-align: right;
 }
 
 
-/* プレビュー */
+/* =========================
+   プレビュー
+========================= */
 
 .preview-note {
     color: #aebcd0;
@@ -244,12 +294,16 @@ button:active {
 }
 
 
-/* 1920×1080の結果画像 */
+/* =========================
+   1920×1080 結果画像
+========================= */
 
 #resultImage {
     position: relative;
+
     width: 1920px;
     height: 1080px;
+
     overflow: hidden;
 
     background:
@@ -263,33 +317,43 @@ button:active {
 .result-overlay {
     width: 100%;
     height: 100%;
-    padding: 52px 62px 42px;
+
+    padding: 46px 60px 35px;
 
     background:
         linear-gradient(
             180deg,
-            rgba(3, 9, 22, 0.28),
-            rgba(3, 8, 20, 0.58)
+            rgba(3, 9, 22, 0.32),
+            rgba(3, 8, 20, 0.62)
         );
 }
 
 
-/* 上部タイトル */
+/* =========================
+   結果画像上部
+========================= */
 
 .result-top {
     display: grid;
-    grid-template-columns: 1fr 1.3fr 1fr;
+
+    grid-template-columns:
+        1fr
+        1.3fr
+        1fr;
+
     align-items: start;
-    min-height: 165px;
+
+    min-height: 150px;
 }
 
 .result-brand {
-    font-size: 42px;
+    font-size: 38px;
     font-weight: 900;
     letter-spacing: 3px;
+
     text-shadow:
         0 3px 12px
-        rgba(0, 0, 0, 0.8);
+        rgba(0, 0, 0, 0.9);
 }
 
 .result-brand span {
@@ -298,136 +362,182 @@ button:active {
 
 .result-brand strong {
     display: block;
-    font-size: 52px;
+    font-size: 48px;
 }
 
 .brand-small {
     color: #80dfff;
-    font-size: 23px;
+    font-size: 22px;
 }
 
 .result-main-title {
     text-align: center;
+
     text-shadow:
         0 4px 15px
-        rgba(0, 0, 0, 0.9);
+        rgba(0, 0, 0, 0.95);
 }
 
 .result-main-title span {
     display: block;
+
     color: #64e8ff;
-    font-size: 48px;
+
+    font-size: 43px;
     font-weight: 900;
+
     letter-spacing: 4px;
 }
 
 .result-main-title strong {
     display: block;
+
     margin-top: 2px;
-    font-size: 56px;
+
+    font-size: 53px;
     line-height: 1;
 }
 
 .result-main-title small {
     display: block;
-    margin-top: 12px;
+
+    margin-top: 10px;
+
     color: #d9f7ff;
-    font-size: 22px;
+
+    font-size: 21px;
     letter-spacing: 2px;
 }
 
 .result-corner-title {
     justify-self: end;
+
     min-width: 190px;
+
     padding: 12px 17px;
+
     border-top: 4px solid #ffffff;
     border-right: 4px solid #ffffff;
+
     text-align: right;
-    font-size: 29px;
+
+    font-size: 28px;
     font-weight: 900;
+
     text-shadow:
         0 3px 10px
-        rgba(0, 0, 0, 0.9);
+        rgba(0, 0, 0, 0.95);
 }
 
 .result-corner-title strong {
     display: block;
-    font-size: 36px;
+    font-size: 35px;
 }
 
 
-/* 左右ランキング表 */
+/* =========================
+   左右ランキング表
+========================= */
 
 .result-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 42px;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 40px;
 }
 
 .result-table {
     width: 100%;
+
     table-layout: fixed;
     border-collapse: collapse;
-    background: rgba(7, 12, 24, 0.64);
+
+    background: rgba(7, 12, 24, 0.68);
+
     box-shadow:
         0 8px 30px
-        rgba(0, 0, 0, 0.5);
+        rgba(0, 0, 0, 0.55);
 }
 
 .result-table th {
-    height: 58px;
-    padding: 8px;
-    background: rgba(9, 14, 27, 0.96);
+    height: 52px;
+
+    padding: 7px;
+
+    background: rgba(9, 14, 27, 0.97);
     color: #ffffff;
+
     border: 2px solid rgba(218, 246, 255, 0.92);
-    font-size: 27px;
+
+    font-size: 25px;
     font-weight: 900;
 }
 
 .result-table td {
-    height: 69px;
+    height: 66px;
+
     padding: 7px;
-    background: rgba(24, 34, 53, 0.78);
+
+    background: rgba(24, 34, 53, 0.82);
     color: #ffffff;
+
     border: 2px solid rgba(212, 242, 255, 0.82);
+
     text-align: center;
-    font-size: 27px;
+
+    font-size: 26px;
     font-weight: 800;
+
     text-shadow:
         0 2px 5px
-        rgba(0, 0, 0, 0.95);
+        rgba(0, 0, 0, 0.98);
 }
 
 .result-table tbody tr:nth-child(even) td {
-    background: rgba(37, 49, 70, 0.8);
+    background: rgba(37, 49, 70, 0.84);
 }
+
+
+/* 1位 */
 
 .result-table tbody tr.top-one td {
     background:
         linear-gradient(
             90deg,
-            rgba(191, 143, 24, 0.9),
-            rgba(83, 61, 15, 0.86)
+            rgba(191, 143, 24, 0.92),
+            rgba(83, 61, 15, 0.88)
         );
 }
+
+
+/* 2位 */
 
 .result-table tbody tr.top-two td {
     background:
         linear-gradient(
             90deg,
-            rgba(136, 151, 169, 0.92),
-            rgba(54, 65, 80, 0.86)
+            rgba(136, 151, 169, 0.94),
+            rgba(54, 65, 80, 0.88)
         );
 }
+
+
+/* 3位 */
 
 .result-table tbody tr.top-three td {
     background:
         linear-gradient(
             90deg,
-            rgba(165, 91, 43, 0.92),
-            rgba(74, 40, 24, 0.86)
+            rgba(165, 91, 43, 0.94),
+            rgba(74, 40, 24, 0.88)
         );
 }
+
+
+/* 列幅 */
 
 .result-table th:nth-child(1),
 .result-table td:nth-child(1) {
@@ -451,34 +561,42 @@ button:active {
 .result-table td:nth-child(2) {
     padding-left: 14px;
     padding-right: 14px;
-    font-size: 25px;
+
     overflow: hidden;
+
+    font-size: 24px;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.empty-result td {
-    color: #d4deec;
-}
 
-
-/* 下部 */
+/* =========================
+   結果画像下部
+========================= */
 
 .result-footer {
     display: flex;
     justify-content: space-between;
-    margin-top: 22px;
+
+    margin-top: 18px;
+
     color: #e4f7ff;
-    font-size: 20px;
+
+    font-size: 19px;
     font-weight: 800;
+
     letter-spacing: 2px;
+
     text-shadow:
         0 3px 8px
-        rgba(0, 0, 0, 0.9);
+        rgba(0, 0, 0, 0.95);
 }
 
 
-/* スマホ */
+/* =========================
+   スマホ対応
+========================= */
 
 @media (max-width: 650px) {
 
@@ -509,7 +627,9 @@ button:active {
     }
 
     .ranking-team {
-        grid-template-columns: 70px 1fr;
+        grid-template-columns:
+            70px
+            1fr;
     }
 
     .ranking-points {

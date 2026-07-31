@@ -193,12 +193,23 @@ button:active {
 
 /* PNG・PDF用結果表 */
 
-#resultImage {
-    width: 760px;
-    min-height: 400px;
-    padding: 30px;
-    background: #05070c;
-    color: #ffffff;
+#resultImage{
+
+width:1600px;
+
+min-height:900px;
+
+padding:40px;
+
+background:
+linear-gradient(
+rgba(0,0,0,.45),
+rgba(0,0,0,.45)
+),
+url("result-bg.jpeg") center center/cover no-repeat;
+
+color:white;
+
 }
 
 .result-header {

@@ -27,24 +27,30 @@
 
 <main>
 
+    <!-- 大会結果入力 -->
     <section class="panel">
 
         <div class="section-title">
 
             <div>
+
                 <h2>大会結果入力</h2>
 
                 <p>
-                    1試合分の順位とキル数を入力してください。
-                    一括集計を押すたびに累計へ加算されます。
+                    順位・チーム名・キル数を入力して、
+                    「一括集計」を押してください。
+                    同じチーム名は累計へ加算されます。
                 </p>
+
             </div>
 
             <div class="round-badge">
 
                 集計済み
 
-                <strong id="roundCount">0</strong>
+                <strong id="roundCount">
+                    0
+                </strong>
 
                 試合
 
@@ -58,11 +64,13 @@
             <table id="scoreTable">
 
                 <thead>
+
                     <tr>
                         <th>順位</th>
                         <th>チーム名</th>
                         <th>キル数</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="tableBody">
@@ -103,17 +111,22 @@
     </section>
 
 
+    <!-- 現在のランキング -->
     <section class="panel">
 
         <h2>現在のランキング</h2>
 
-        <div id="ranking" class="ranking-list">
+        <div
+            id="ranking"
+            class="ranking-list"
+        >
             まだ結果がありません
         </div>
 
     </section>
 
 
+    <!-- 出力ボタン -->
     <section class="panel">
 
         <h2>大会結果出力</h2>
@@ -147,12 +160,13 @@
     </section>
 
 
+    <!-- 結果画像プレビュー -->
     <section class="preview-panel">
 
         <h2>大会結果プレビュー</h2>
 
         <p class="preview-note">
-            横にスクロールすると全体を確認できます。
+            スマホでは横にスクロールして確認できます。
         </p>
 
         <div class="result-scroll">
@@ -161,6 +175,7 @@
 
                 <div class="result-overlay">
 
+                    <!-- 上部タイトル -->
                     <div class="result-top">
 
                         <div class="result-brand">
@@ -206,11 +221,14 @@
                     </div>
 
 
+                    <!-- 左右ランキング -->
                     <div class="result-columns">
 
+                        <!-- 1〜10位 -->
                         <table class="result-table">
 
                             <thead>
+
                                 <tr>
                                     <th>#</th>
                                     <th>TEAM</th>
@@ -218,24 +236,20 @@
                                     <th>RANK</th>
                                     <th>TOTAL</th>
                                 </tr>
+
                             </thead>
 
                             <tbody id="rankingLeft">
-
-                                <tr class="empty-result">
-                                    <td colspan="5">
-                                        NO RESULT
-                                    </td>
-                                </tr>
-
                             </tbody>
 
                         </table>
 
 
+                        <!-- 11〜20位 -->
                         <table class="result-table">
 
                             <thead>
+
                                 <tr>
                                     <th>#</th>
                                     <th>TEAM</th>
@@ -243,16 +257,10 @@
                                     <th>RANK</th>
                                     <th>TOTAL</th>
                                 </tr>
+
                             </thead>
 
                             <tbody id="rankingRight">
-
-                                <tr class="empty-result">
-                                    <td colspan="5">
-                                        NO RESULT
-                                    </td>
-                                </tr>
-
                             </tbody>
 
                         </table>
@@ -260,6 +268,7 @@
                     </div>
 
 
+                    <!-- 下部 -->
                     <div class="result-footer">
 
                         <span>
@@ -283,11 +292,15 @@
 </main>
 
 
+<!-- PNG生成 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<!-- PDF生成 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+<!-- 自分のJavaScript -->
 <script src="script.js"></script>
 
 </body>
+
 </html>

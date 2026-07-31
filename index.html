@@ -11,7 +11,8 @@
 
     <title>result e-Sports APEX集計</title>
 
-    <link rel="stylesheet" href="style.css">
+    <!-- 更新時は数字を変更すると古いCSSを読み込みにくくなります -->
+    <link rel="stylesheet" href="style.css?v=20">
 </head>
 
 <body>
@@ -37,9 +38,8 @@
                 <h2>大会結果入力</h2>
 
                 <p>
-                    順位・チーム名・キル数を入力して
+                    1試合分の順位・チーム名・キル数を入力して、
                     「一括集計」を押してください。
-                    同じチーム名は累計へ加算されます。
                 </p>
 
                 <p class="match-point-description">
@@ -69,8 +69,7 @@
             id="winnerNotice"
             class="winner-notice"
             hidden
-        >
-        </div>
+        ></div>
 
 
         <div class="input-table-wrapper">
@@ -174,7 +173,7 @@
     </section>
 
 
-    <!-- 結果プレビュー -->
+    <!-- 大会結果プレビュー -->
     <section class="preview-panel">
 
         <h2>大会結果プレビュー</h2>
@@ -189,7 +188,6 @@
 
                 <div class="result-overlay">
 
-                    <!-- 上部 -->
                     <div class="result-top">
 
                         <div class="result-brand">
@@ -223,8 +221,7 @@
                                 id="resultWinnerText"
                                 class="result-winner-text"
                                 hidden
-                            >
-                            </div>
+                            ></div>
 
                         </div>
 
@@ -242,10 +239,9 @@
                     </div>
 
 
-                    <!-- 左右ランキング -->
                     <div class="result-columns">
 
-                        <!-- 1〜10位 -->
+                        <!-- 1位〜10位 -->
                         <table class="result-table">
 
                             <thead>
@@ -266,7 +262,7 @@
                         </table>
 
 
-                        <!-- 11〜20位 -->
+                        <!-- 11位〜20位 -->
                         <table class="result-table">
 
                             <thead>
@@ -289,7 +285,6 @@
                     </div>
 
 
-                    <!-- 下部 -->
                     <div class="result-footer">
 
                         <span>
@@ -317,15 +312,12 @@
 </main>
 
 
-<!-- PNG生成 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<!-- PDF生成 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- メイン処理 -->
-<script src="script.js"></script>
+<!-- 更新時は数字を変更すると古いJSを読み込みにくくなります -->
+<script src="script.js?v=20"></script>
 
 </body>
-
 </html>

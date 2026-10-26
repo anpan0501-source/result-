@@ -3,28 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>result e-Sports APEX集計</title>
 
-    <!-- 更新時は数字を変更すると古いCSSを読み込みにくくなります -->
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
 </head>
 
 <body>
 
 <header class="site-header">
-
     <h1>result e-Sports</h1>
-
     <p>APEX Tournament System</p>
-
 </header>
-
 
 <main>
 
@@ -34,7 +25,6 @@
         <div class="section-title">
 
             <div>
-
                 <h2>大会結果入力</h2>
 
                 <p>
@@ -42,57 +32,44 @@
                     「一括集計」を押してください。
                 </p>
 
-                <p class="match-point-description">
-                    ポーランドルール：50ポイント以上で点灯。
-                    点灯状態で次の試合に1位を取ると優勝です。
+                <p class="normal-rule-description">
+                    通常ルール：全試合の順位ポイントとキルポイントの
+                    合計で順位を決定します。
                 </p>
-
             </div>
 
-
             <div class="round-badge">
-
                 集計済み
-
-                <strong id="roundCount">
-                    0
-                </strong>
-
+                <strong id="roundCount">0</strong>
                 試合
-
             </div>
 
         </div>
 
-
+        <!-- 既存JSとの互換性のため要素を保持 -->
         <div
             id="winnerNotice"
             class="winner-notice"
             hidden
         ></div>
 
-
         <div class="input-table-wrapper">
 
             <table id="scoreTable">
 
                 <thead>
-
                     <tr>
                         <th>順位</th>
                         <th>チーム名</th>
                         <th>キル数</th>
                     </tr>
-
                 </thead>
 
-                <tbody id="tableBody">
-                </tbody>
+                <tbody id="tableBody"></tbody>
 
             </table>
 
         </div>
-
 
         <div class="button-area">
 
@@ -123,21 +100,16 @@
 
     </section>
 
-
     <!-- 現在のランキング -->
     <section class="panel">
 
         <h2>現在のランキング</h2>
 
-        <div
-            id="ranking"
-            class="ranking-list"
-        >
+        <div id="ranking" class="ranking-list">
             まだ結果がありません
         </div>
 
     </section>
-
 
     <!-- 出力 -->
     <section class="panel">
@@ -146,17 +118,11 @@
 
         <div class="button-area">
 
-            <button
-                type="button"
-                onclick="exportCSV()"
-            >
+            <button type="button" onclick="exportCSV()">
                 📄 CSV
             </button>
 
-            <button
-                type="button"
-                onclick="exportPDF()"
-            >
+            <button type="button" onclick="exportPDF()">
                 📑 PDF
             </button>
 
@@ -171,7 +137,6 @@
         </div>
 
     </section>
-
 
     <!-- 大会結果プレビュー -->
     <section class="preview-panel">
@@ -191,32 +156,20 @@
                     <div class="result-top">
 
                         <div class="result-brand">
-
-                            <span class="brand-small">
-                                RESULT
-                            </span>
-
-                            <strong>
-                                E-SPORTS
-                            </strong>
-
+                            <span class="brand-small">RESULT</span>
+                            <strong>E-SPORTS</strong>
                         </div>
-
 
                         <div class="result-main-title">
 
-                            <span>
-                                APEX CUSTOM
-                            </span>
-
-                            <strong>
-                                TOTAL RESULT
-                            </strong>
+                            <span>APEX CUSTOM</span>
+                            <strong>TOTAL RESULT</strong>
 
                             <small id="resultRoundText">
                                 0 MATCHES
                             </small>
 
+                            <!-- 既存JSとの互換性のため要素を保持 -->
                             <div
                                 id="resultWinnerText"
                                 class="result-winner-text"
@@ -225,19 +178,12 @@
 
                         </div>
 
-
                         <div class="result-corner-title">
-
                             FINAL
-
-                            <strong>
-                                RESULT
-                            </strong>
-
+                            <strong>RESULT</strong>
                         </div>
 
                     </div>
-
 
                     <div class="result-columns">
 
@@ -245,7 +191,6 @@
                         <table class="result-table">
 
                             <thead>
-
                                 <tr>
                                     <th>#</th>
                                     <th>TEAM</th>
@@ -253,20 +198,16 @@
                                     <th>RANK</th>
                                     <th>TOTAL</th>
                                 </tr>
-
                             </thead>
 
-                            <tbody id="rankingLeft">
-                            </tbody>
+                            <tbody id="rankingLeft"></tbody>
 
                         </table>
-
 
                         <!-- 11位〜20位 -->
                         <table class="result-table">
 
                             <thead>
-
                                 <tr>
                                     <th>#</th>
                                     <th>TEAM</th>
@@ -274,31 +215,18 @@
                                     <th>RANK</th>
                                     <th>TOTAL</th>
                                 </tr>
-
                             </thead>
 
-                            <tbody id="rankingRight">
-                            </tbody>
+                            <tbody id="rankingRight"></tbody>
 
                         </table>
 
                     </div>
 
-
                     <div class="result-footer">
-
-                        <span>
-                            result e-Sports
-                        </span>
-
-                        <span>
-                            MATCH POINT：50
-                        </span>
-
-                        <span>
-                            APEX TOURNAMENT SYSTEM
-                        </span>
-
+                        <span>result e-Sports</span>
+                        <span>順位ポイント ＋ キルポイント</span>
+                        <span>APEX TOURNAMENT SYSTEM</span>
                     </div>
 
                 </div>
@@ -311,13 +239,10 @@
 
 </main>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- 更新時は数字を変更すると古いJSを読み込みにくくなります -->
-<script src="script.js?v=20"></script>
+<script src="script.js?v=21"></script>
 
 </body>
 </html>
